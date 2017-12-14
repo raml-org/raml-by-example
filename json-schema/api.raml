@@ -1,0 +1,33 @@
+#%RAML 1.0
+title: Human API
+
+uses:
+  library: library.raml
+
+/humans:
+  post:
+    body:
+      application/json:
+        type: library.Human
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: library.Human[]
+            example:
+                -
+                  first_name: one
+                  last_name: zero
+                  home_address:
+                    street_address: 1 Fine Street
+                    city: Neartown
+                    country: Farelly
+                -
+                  first_name: two
+                  last_name: zero
+                  home_address:
+                    street_address: 10 Narrow Lane
+                    city: Farcity
+                    state: Wonderstate
+                    country: United Islands

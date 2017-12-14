@@ -1,0 +1,48 @@
+#%RAML 1.0 Library
+
+types:
+  Address:
+    type: object
+    properties:
+      street_address:
+        type: string
+        required: true
+      city:
+        type: string
+        required: true
+      state:
+        type: string
+        required: false
+      country:
+        type: string
+        required: true
+      planet:
+        type: string
+        required: false
+  Human:
+    description: Human Schema
+    type: object
+    properties:
+      first_name:
+        type: string
+        required: true
+      last_name:
+        type: string
+        required: true
+      age:
+        description: Age in years
+        type: integer
+        minimum: 0
+        required: false
+      home_address:
+        required: true
+        type: Address
+      work_address:
+        required: false
+        type: Address
+      other_addresses:
+        type: array
+        items:
+          type: Address
+        required: false
+
