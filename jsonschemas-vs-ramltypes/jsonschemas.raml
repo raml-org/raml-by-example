@@ -1,0 +1,55 @@
+#%RAML 1.0
+title: Human API
+
+types:
+  Human: |
+     {
+       "type": "object",
+       "$schema": "http://json-schema.org/draft-04/schema",
+       "id": "http://jsonschema.net",
+       "properties": {
+         "first_name": {
+           "type": "string"
+         },
+         "last_name": {
+           "type": "string"
+         },
+         "age": {
+           "type": "number"
+         }
+       },
+       "required": ["first_name", "last_name"]
+     }
+  Humans: |
+     {
+       "type": "array",
+       "$schema": "http://json-schema.org/draft-04/schema",
+       "id": "http://jsonschema.net",
+       "items": {
+        "type": "object",
+        "properties": {
+         "first_name": {
+           "type": "string"
+         },
+         "last_name": {
+           "type": "string"
+         },
+         "age": {
+           "type": "number"
+         }
+        },
+        "required": ["first_name", "last_name"]
+       }
+     }
+
+/humans:
+  post:
+    body:
+      application/json:
+        type: Human
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: Humans

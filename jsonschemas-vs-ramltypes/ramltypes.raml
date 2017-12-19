@@ -1,0 +1,22 @@
+#%RAML 1.0
+title: Human API
+
+types:
+  Human:
+    type: object
+    properties:
+      first_name: string
+      last_name: string
+      age?: number
+
+/humans:
+  post:
+    body:
+      application/json:
+        type: Human
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: Human[]
