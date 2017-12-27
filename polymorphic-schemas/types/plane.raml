@@ -1,0 +1,18 @@
+#%RAML 1.0 DataType
+
+type: !include vehicle.raml
+properties:
+  type:
+    type: string
+    enum: ["Aircraft"]
+  classification:
+    type: string
+    enum: ["Propeller", "Jet"]
+  wings:
+    type: integer
+    minimum: 1
+    maximum: 8
+  seats:
+    type: integer
+    minimum: 1
+    maximum: 853

@@ -1,0 +1,14 @@
+#%RAML 1.0 DataType
+
+type: !include vehicle.raml
+properties:
+  type:
+    type: string
+    enum: ["Landcraft"]
+  classification:
+    type: string
+    enum: ["Mountain", "Racing", "Touring", "Hybrid", "Tandem", "Electric", "Cargo"]
+  wheels:
+    type: integer
+    minimum: 1
+    maximum: 4

@@ -1,0 +1,22 @@
+#%RAML 1.0 DataType
+
+type: !include vehicle.raml
+properties:
+  type:
+    type: string
+    enum: ["Landcraft"]
+  classification:
+    type: string
+    enum: ["Sedan", "Station Wagons", "Minivans", "Sports", "Luxury"]
+  seats:
+    type: integer
+    minimum: 1
+    maximum: 12
+  wheels:
+    type: integer
+    minimum: 3
+    maximum: 6
+  doors:
+    type: integer
+    minimum: 1
+    maximum: 6
