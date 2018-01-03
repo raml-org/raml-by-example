@@ -3,11 +3,9 @@
 type: !include vehicle.raml
 properties:
   type:
-    type: string
-    enum: ["Aircraft"]
+    enum: [Aircraft]
   classification:
-    type: string
-    enum: ["Propeller", "Jet"]
+    enum: [Propeller, Jet]
   wings:
     type: integer
     minimum: 1

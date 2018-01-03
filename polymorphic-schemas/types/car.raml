@@ -3,11 +3,9 @@
 type: !include vehicle.raml
 properties:
   type:
-    type: string
-    enum: ["Landcraft"]
+    enum: [Landcraft]
   classification:
-    type: string
-    enum: ["Sedan", "Station Wagons", "Minivans", "Sports", "Luxury"]
+    enum: [Sedan, Station Wagons, Minivans, Sports, Luxury]
   seats:
     type: integer
     minimum: 1

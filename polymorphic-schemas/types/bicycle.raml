@@ -3,11 +3,9 @@
 type: !include vehicle.raml
 properties:
   type:
-    type: string
-    enum: ["Landcraft"]
+    enum: [Landcraft]
   classification:
-    type: string
-    enum: ["Mountain", "Racing", "Touring", "Hybrid", "Tandem", "Electric", "Cargo"]
+    enum: [Mountain, Racing, Touring, Hybrid, Tandem, Electric, Cargo]
   wheels:
     type: integer
     minimum: 1
