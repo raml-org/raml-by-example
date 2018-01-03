@@ -33,7 +33,6 @@ However, in RAML, arrays have an `items` property in which the type of all array
 ```yaml
 type: array
 items:
-  type: string
   enum: [one, two, three]
 ```
 
