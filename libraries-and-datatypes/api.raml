@@ -1,0 +1,13 @@
+#%RAML 1.0
+title: My API
+
+uses:
+  myLib: library.raml
+
+/myresource:
+  post:
+    body:
+      application/json:
+        type: myLib.myType
+        properties:
+          four: array

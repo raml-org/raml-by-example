@@ -1,0 +1,8 @@
+#%RAML 1.0 Library
+
+types:
+  myOtherType: !include dataType.raml
+  myType:
+    type: myOtherType
+    properties:
+      three: boolean
