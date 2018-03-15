@@ -1,0 +1,25 @@
+#%RAML 1.0
+title: Example API
+baseUri: http://127.0.0.1
+
+/:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              hello: world
+/users:
+  get:
+    headers:
+      Authorized:
+        type: string
+        enum: [yes]
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              firstname: john
+              lastname: doe
