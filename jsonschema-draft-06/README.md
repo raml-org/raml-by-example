@@ -1,4 +1,6 @@
-# draft-06 changes
+# ramldt2jsonschema & jsonSchema draft-06
+
+If your workflow involves the use of jsonSchema to describe the datatypes used by your api, and ramldt2jsonschema's js2dt command to convert them into raml, then you might be glad to know that as of v0.2.0, ramldt2jsonschema supports draft-06 of jsonSchema. Here are a few new features to try out.
 
 - `$ref` is now allowed as a property name.
 
