@@ -1,7 +1,38 @@
-Now when converting datatypes from jsonSchema to raml (using the js2dt function of ramldt2jsonschema), the required status of properties is denoted using the less verbose syntax.
+# More concise syntax in v0.1.3
+In v0.1.3 of raml2jsonschema json documents are now processed into more concise raml documents.
 
-Previously, when converting from jsonschema, each property would have a required keyword, with value true or false.
-As of v0.1.3, required properties are bare (the default being required) and optional properties are marked thus by a trailing questionmark added to the property's name.
+## Type Only Properties
+Firstly, json schema properties with only a type declaration ie...
+```
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "User",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "Email"
+    }
+  }
+}
+```
+are converted to raml datatype properties with the form `property: type`
+```
+#%RAML 1.0 Library
+
+types:
+  User:
+    type: object
+    properties:
+      email: Email
+    displayName: User
+```
+
+
+## Terse Requirements
+Now when converting datatypes from jsonSchema to raml (using the js2dt function of ramldt2jsonschema), the required status of properties is denoted using a less verbose syntax.
+
+Previously, in the resulting raml datatype, each property would have a required keyword, with a value of true or false.
+As of v0.1.3, required properties are not noted as such (required properties being the default) and optional properties are indicated by a trailing question mark appended to the property's name.
 
 ```
 {
