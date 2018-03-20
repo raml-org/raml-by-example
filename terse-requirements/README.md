@@ -4,8 +4,8 @@ tags: ['RAML', ramldt2jsonschema', 'JSON Schema']
 license: 'cc-40-by'
 ---
 
-# More concise syntax in v0.1.3
-In v0.1.3 of raml2jsonschema JSON documents are now processed into more concise RAML documents.
+# More concise syntax in `raml2jsonschema` v0.1.3
+In v0.1.3 of `raml2jsonschema` ([release notes](https://github.com/raml-org/ramldt2jsonschema/releases/tag/v0.1.3)), JSON documents are now processed into more concise RAML documents.
 
 ## Type Only Properties
 Firstly, JSON schema properties with only a type declaration ie...
