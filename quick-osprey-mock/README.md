@@ -1,4 +1,7 @@
-Create a hello world api `api.raml`.
+Perhaps the quickest way to turn a RAML file into a local mock service is to use [osprey-mock-service](https://github.com/mulesoft-labs/osprey-mock-service). It's simple to get started.
+
+## Hello world
+First we'll create a small hello world api, and save it as `api.raml`
 
 ```yaml
 #%RAML 1.0
@@ -15,13 +18,16 @@ baseUri: http://127.0.0.1
               hello: world
 ```
 
-Install express and osprey-mock-service
+## Install Dependencies
+
+We're going to use the service with express.js, so let's install both from npm.
 
 ```
 npm install --save express osprey-mock-service
 ```
 
-Create a small node app.
+## Write the app
+ In only 10 lines of code we can create a small express app, and register our mock service as middleware.
 
 ```js
 var mockService = require('osprey-mock-service')
@@ -38,13 +44,15 @@ mockService.loadFile(path.join(__dirname, 'api.raml'), {})
   })
 ```
 
-Try it out.
+## Test It
+We can use `curl` or any http client to make sure it's working.
 
 ```
 curl 127.0.0.1:3000
 ```
 
-Add a more complex endpoint.
+## Flesh it out
+Here we'll add a more complex endpoint that expects an authorization header.
 
 ```
 /users:
@@ -62,8 +70,13 @@ Add a more complex endpoint.
               lastname: doe
 ```
 
-Try it out.
+Use the `-H` flag to pass a header in curl.
 
 ```
 curl 127.0.0.1:3000/users -H authorized:true
 ```
+
+## Limitations
+
+osprey-mock-services works well out of the box, but it does have limitations. This module only uses the `example` (or `examples`) property inside a given resource/method body. It does not take into consideration any of the `example` properties defined inside the `properties` or `schema` of the body itself.
+
