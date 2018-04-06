@@ -1,0 +1,41 @@
+#%RAML 1.0
+
+title: Hypothetical Bank API
+mediaType: application/json
+
+types:
+  Customer: object
+  Account: 
+    properties:
+      balance: Amount
+  Amount: !include amount.raml
+
+/customers:
+  get:
+    description: Returns all customers
+    body: Customer[]
+  post:
+    description: Creates a customer
+    body: Customer
+
+  /{customer_id}:
+    patch:
+      description: Edit a customer's information
+      body: Customer
+    delete:
+      description: Deletes a customer
+
+    /accounts:
+      get:
+        description: Returns all accounts of a given customer
+        body: Account[]
+      post:
+        description: Creates an account for a given customer
+        body: Account
+
+      /{account_id}:
+        patch:
+          description: Edit the account of a given customer
+          body: Account
+        delete:
+          description: Deletes the account of a given customer
