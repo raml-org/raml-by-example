@@ -1,0 +1,16 @@
+#%RAML 1.0
+title: Example API
+mediaType: application/json
+
+traits:
+  sparsable: !include sparsable.raml
+
+/resource:
+  get:
+    is: [ sparsable: { fieldset: Foo|Bar } ]
+    responses:
+      200:
+        body:
+          properties:
+            Foo: string
+            Bar: integer
