@@ -1,15 +1,16 @@
 #%RAML 1.0
 title: Example API
 baseUri: http://127.0.0.1
+mediaType: application/json
 
 /:
   get:
     responses:
       200:
         body:
-          application/json:
-            example:
-              hello: world
+          example:
+            hello: world
+
 /users:
   get:
     headers:
@@ -19,7 +20,9 @@ baseUri: http://127.0.0.1
     responses:
       200:
         body:
-          application/json:
-            example:
-              firstname: john
-              lastname: doe
+          type: array
+          items: object
+          example:
+            - 
+              firstname: Jane
+              lastname: Doe
