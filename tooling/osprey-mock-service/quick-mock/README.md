@@ -52,8 +52,7 @@ We can use `curl` or any http client to make sure it's working.
 curl 127.0.0.1:3000
 
 {
-  "firstname": "john",
-  "lastname": "doe"
+  "hello": "world"
 }
 ```
 
