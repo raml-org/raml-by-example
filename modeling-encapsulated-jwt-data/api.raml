@@ -1,0 +1,13 @@
+#%RAML 1.0
+title: Example API
+mediaType: application/json
+
+uses:
+  lib: lib.raml
+
+/resource:
+  post:
+    body:
+      properties:
+        token:
+          type: lib.myJWT

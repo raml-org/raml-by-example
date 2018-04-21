@@ -1,0 +1,26 @@
+#%RAML 1.0 Overlay
+usage: JWT Encapsulated data
+extends: api.raml
+
+annotationTypes:
+  myJOSEHeader:
+    allowedTargets: TypeDeclaration
+    properties:
+      alg:
+        enum: [HS256, HS512]
+      typ:
+        enum: [JWT]
+  myJWSPayload:
+    allowedTargets: TypeDeclaration
+    properties:
+      Foo: integer
+      Bar: integer
+      name: string
+
+/resource:
+  post:
+    body:
+      properties:
+        token:
+          (lib.myJOSEHeader): 
+          (lib.myJWSPayload):
