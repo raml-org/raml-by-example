@@ -1,6 +1,6 @@
 ---
 publication: 'RAML Playground'
-tags: ['nodejs', 'Web API', 'Mockking', 'JavaScript', 'RAML']
+tags: ['nodejs', 'WebAPI', 'Mocking', 'JavaScript', 'RAML']
 license: 'cc-40-by'
 ---
 
