@@ -2,14 +2,15 @@
 
 annotationTypes:
   hypermedia-plan:
+    displayName: Hypermedia Plan
     allowedTargets: [ API, Resource ]
     properties:
       controls:
         description: Inform the (client / client developer) where in the message hypermedia is to be found
-        properties: 
-          url?: 
+        properties:
+          url?:
             default: href
-          semantic?: 
+          semantic?:
             default: rel
           ui?:
             default: label
@@ -18,16 +19,17 @@ annotationTypes:
         type: boolean
         default: true
   hypermedia-control:
+    displayName: Hypermedia Control
     allowedTargets: [ TypeDeclaration, Method ]
     properties:
-      method?: 
+      method?:
         description: Which method should be executed on resource?
         default: get
       visible?:
         type: boolean
         description:  Should client should provide link to user?
         default: true
-      targetResource?: 
+      targetResource?:
         type: string
         description: Resource as defined in this API
       follow?:

@@ -20,6 +20,7 @@ uses:
 securedBy: [sec.oauth_2_0]
 
 /items:
+  protocols: [ HTTPS ]
   type: res.read-only-collection
   displayName: Items
   description: List of all items on sale
@@ -109,6 +110,7 @@ securedBy: [sec.oauth_2_0]
   description: All user orders
   type: res.read-only-collection
   delete:
+    displayName: DELETE My Order
     description: Cancel order
   patch:
     description: 'Modify part of Order: quantity of items, delivery address'

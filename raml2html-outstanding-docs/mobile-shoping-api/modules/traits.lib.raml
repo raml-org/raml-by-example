@@ -2,6 +2,7 @@
 
 traits:
   pageable:
+    displayName: Pageable
     queryParameters:
       pageIndex:
         type: integer
@@ -14,6 +15,7 @@ traits:
         example: 10
         required: false
   searchable:
+    displayName: Searchable
     queryParameters:
       name:
         type: string
@@ -28,10 +30,11 @@ traits:
         required: false
         example: Naturtint
   imageable:
-      queryParameters:
-        imageType:
-          description: Comma , separated list just like in example. One alone may be present
-          type: string
-          required: false
-          default: SmallImage
-          example: TinyImage,SwatchImage,SmallImage,MediumImage,LargeImage
+    displayName: Imageable
+    queryParameters:
+      imageType:
+        description: Comma , separated list just like in example. One alone may be present
+        type: string
+        required: false
+        default: SmallImage
+        example: TinyImage,SwatchImage,SmallImage,MediumImage,LargeImage

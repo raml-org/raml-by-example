@@ -19,6 +19,9 @@ resourceTypes:
       is: [tra.pageable]
   collection:
     type: read-only-collection
+    put?:
+      body:
+        type: typ.Post<<resourcePathName | !uppercamelcase>>Request
     post:
       body:
         type: typ.Post<<resourcePathName | !uppercamelcase>>Request
