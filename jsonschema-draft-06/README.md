@@ -1,6 +1,8 @@
 # ramldt2jsonschema & jsonSchema draft-06
 
-If your workflow involves the use of jsonSchema to describe the datatypes used by your api, and ramldt2jsonschema's js2dt command to convert them into raml, then you might be glad to know that as of v0.2.0, ramldt2jsonschema supports draft-06 of jsonSchema. Here are a few new features to try out.
+If your workflow involves the use of JSON Schema to describe the payloads of your api, and `ramldt2jsonschema`'s js2dt command to convert them into raml, then you might be glad to know that as of v0.2.0, `ramldt2jsonschema` supports draft-06 of JSON Schema. 
+
+Here are a few of the new features introduced in JSON Schema draft-06:
 
 - `$ref` is now allowed as a property name.
 
@@ -21,8 +23,7 @@ If your workflow involves the use of jsonSchema to describe the datatypes used b
   }
   ```
 
-- Positive schema booleans can now be used outside of `additionalProperties` and `additionalItems` (negative booleans are still not convertible into raml)
-  Here `"list": true`, and `"description": {}` have the same effect.
+- Positive schema booleans can now be used outside of `additionalProperties` and `additionalItems` (negative booleans are still not convertible into raml). Here `"list": true`, and `"description": {}` have the same effect.
 
   ```
   {
