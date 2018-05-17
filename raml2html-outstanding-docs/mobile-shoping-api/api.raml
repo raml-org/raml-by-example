@@ -1,7 +1,14 @@
 #%RAML 1.0
 title: Avocado Brick Orders API
-baseUri: https://avocado-brick.hi/api
-version: 1
+version: v1
+baseUri: https://{devPrefix}avocado-brick.hi/api/{version}/
+baseUriParameters:
+  devPrefix:
+    description: Development host prefix
+    type: string
+    example: "staging."
+    required: false
+protocols: [ HTTPS ]
 mediaType: application/json
 documentation:
   - !include docs/intro.doc.raml
@@ -10,60 +17,87 @@ uses:
   res: modules/resource-types.lib.raml
   tra: modules/traits.lib.raml
   sec: modules/security.lib.raml
-
 securedBy: [sec.oauth_2_0]
+
 /items:
   type: res.read-only-collection
+  displayName: Items
   description: List of all items on sale
   get:
     is: [tra.searchable, tra.imageable]
+    description: List all the items on sale
   /{item}:
+    displayName: Item
     type: res.member
     get:
       is: [tra.imageable]
+      description: Get one particular item
+
 /my-wish-list:
   type: res.collection
+  displayName: My Wish List
+  description: My Wish List
   post:
     description: Add an Item to my Wish List.
   /{wish}:
+    displayName: My Wish List item
     delete:
-      description: Remove from wish list
+      description: Remove an Item from my Wish list
+
 /my-basket:
   type: res.collection
+  displayName: My Basket
   description: All items ready for purchase
   post:
     description: Add an Item to my Basket. Of course I may add more than 1 of the same Item.
   /checkout:
+    displayName: My Basket Checkout
     type: res.controller
     description: Orders both pending and fulfilled
   /{item}:
+    displayName: My Basket Item
     delete:
       description: Remove item from basket
+
 /mobile-tokens/{mobileType}:
+  displayName: Mobile Tokens
+  description: Mobile Tokens
   uriParameters:
     mobileType:
       type: string
       enum: [ios, android]
   post:
+    description: Validate particular mobile token
     body:
       type:
         properties:
           token: string
         example:
           token: afdasfas23lkesf
+
 /my-profile:
+  displayName: My Profile
+  description: Current profile user info
   type: res.base
+
 /brands:
+  displayName: Brands
+  description: Items' brands
   type: res.read-only-collection
   get:
+    description: List all the items' brands
     queryParameters:
       name:
         type: string
         required: false
         example: Deep Steep Honey Bubble Bath
+
 /categories:
+  displayName: Categories
+  description: Items' categories
   type: res.read-only-collection
   get:
+    description: List all the items' categories
     queryParameters:
       name:
         type: string
@@ -71,21 +105,39 @@ securedBy: [sec.oauth_2_0]
         example: Oils
 
 /my-orders:
+  displayName: My Orders
+  description: All user orders
   type: res.read-only-collection
   delete:
     description: Cancel order
   patch:
     description: 'Modify part of Order: quantity of items, delivery address'
+
 /trending-items:
+  displayName: Trending items
+  description: Trending items
   type: res.read-only-collection
   get:
+    description: List all trending items
     is: [tra.searchable]
   /{item}/reviews:
+    uriParameters:
+      item:
+        description: The id of the item
+        type: string
+    displayName: Trending item reviews
+    description: Trending items reviews endpoint
     type: res.read-only-collection
+
 /recommendations:
-  type: res.read-only-collection
+  displayName: Recommendations
   description: Recommended Products based on previous purchases
+  type: res.read-only-collection
+
 /promotions:
+  displayName: Promotions
+  description: Currently running promotions
   type: res.read-only-collection
   get:
+    description: Get list of all currently running promotions
     is: [tra.searchable]

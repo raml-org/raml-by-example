@@ -5,46 +5,63 @@ uses:
 
 types:
   ResourceLink:
+    displayName: Resource Link
     properties:
       href: string
       rel:
         enum: [self, next, prev]
       method?:
         default: get
+
   ImageLink:
+    displayName: Image Link
     properties:
       href: string
       rel:
         enum: [SmallImage, MediumImage, LargeImage]
+
   Item:
+    type: object
+    minProperties: 1
     properties:
-      id: string
+      id:
+        type: string
+        minLength: 1
+        maxLength: 128
       type?: string
       name: string
       summary?: string
       brand?: string
       links: (ResourceLink | ImageLink)[]
+      /^note\d+$/: string
+    facets:
+      storeItem?: boolean
+
   Sku:
     type: Item
+    storeItem: true
     properties:
       price: number
       sku: string
       stockQuantity: integer
 
   GetItemsResponse:
+    displayName: Get Items Response
     properties:
       links: ResourceLink[]
       collection:
         properties:
-          size: integer
+          size:
+            type: integer
+            minimum: 1
           items: Item[]
     example:
       links:
-        - href: https://avocado-brick.hi/api/items?pageIndex=30&pageSize=10
+        - href: https://avocado-brick.hi/api/v1/items?pageIndex=30&pageSize=10
           rel: next
-        - href: https://avocado-brick.hi/api/items?pageIndex=10&pageSize=10
+        - href: https://avocado-brick.hi/api/v1/items?pageIndex=10&pageSize=10
           rel: prev
-        - href: https://avocado-brick.hi/api/items?pageIndex=20&pageSize=10
+        - href: https://avocado-brick.hi/api/v1/items?pageIndex=20&pageSize=10
           rel: self
       collection:
         size: 2
@@ -54,7 +71,7 @@ types:
             name: L'Oreal Oreor 30 Volume Creme Developer
             brand: L'Oreal Paris
             links:
-              - href: https://avocado-brick.hi/api/items/B003Y60XCC
+              - href: https://avocado-brick.hi/api/v1/items/B003Y60XCC
                 rel: self
               - href: http://avocado-brick.hi/images/I/41MWX6KNAuL._SL75_.jpg
                 rel: SmallImage
@@ -63,20 +80,21 @@ types:
             name: Pearlcium Pearl Powder
             brand: TheraPure Health Essentials
             links:
-              - href: https://avocado-brick.hi/api/items/B0042YK9F6
+              - href: https://avocado-brick.hi/api/v1/items/B0042YK9F6
                 rel: self
               - href: http://avocado-brick.hi/images/I/316RsE4g09L._SL75_.jpg
                 rel: SmallImage
 
-
-
-
   GetItemResponse:
+    displayName: Get Item Response
     type: Item
+    storeItem: false
     properties:
       skus:
         properties:
-          size: integer
+          size:
+            type: integer
+            minimum: 1
           items: Sku[]
     example:
       links:
@@ -112,18 +130,26 @@ types:
               - href: http://avocado-brick.hi/images/I/847gjx12._SL75_.jpg
                 rel: SmallImage
 
-
-
   GetMyWishListResponse:
+    displayName: GET My Wish List Response
+    description: GET requests response of My With List endpoint
     type: GetItemsResponse
+
   PostMyWishListRequest:
+    displayName: POST My Wish List Response
+    description: POST requests response of My With List endpoint
     properties:
       sku: string
     example:
-      sku: B004GW14E4
+      displayName: Simple response
+      description: POST My Wish List Response example
+      strict: false
+      value:
+        sku: B004GW14E4
 
 
   GetMyBasketResponse:
+    description: GET requests response of My Basket endpoint
     properties:
       links: ResourceLink[]
       items:
@@ -163,8 +189,12 @@ types:
           quantity: 1
 
   PostMyBasketRequest:
+    description: POST requests response of My Basket endpoint
     properties:
-      sku: string
+      sku:
+        type: string
+        minLength: 1
+        maxLength: 128
       quantity: integer
       price: number
     example:
@@ -173,6 +203,7 @@ types:
       price: 10.99
 
   PostCheckoutRequest:
+    description: POST requests response of Checkout endpoint
     properties:
       pickupLocation: string
       items:
@@ -214,7 +245,7 @@ types:
       items: string[]
     example:
       links:
-        - href: https://avocado-brick.hi/api/brands/dsf23
+        - href: https://avocado-brick.hi/api/v1/brands/dsf23
           rel: self
       items:
         - Jerome Russell
@@ -226,11 +257,12 @@ types:
       items: string[]
     example:
       links:
-        - href: https://avocado-brick.hi/api/categories/xx22
+        - href: https://avocado-brick.hi/api/v1/categories/xx22
           rel: self
       items:
         - Soaps
         - Perfumes
+
   GetMyOrdersResponse:
     properties:
       links: ResourceLink[]
@@ -238,13 +270,16 @@ types:
         type: array
         items:
           properties:
-            date: datetime
+            date:
+              type: datetime
+              format: rfc3339
             items:
               type: array
               items:
                 type: Sku
                 properties:
                   quantity: integer
+
   GetRecommendationsResponse:
     type: GetItemsResponse
 
