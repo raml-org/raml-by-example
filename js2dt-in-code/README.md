@@ -1,24 +1,29 @@
 Download some example json, I'll use an example from json-schema.org
-```
-curl http://json-schema.org/example/calendar.json >calendar.json
+```sh
+$ curl http://json-schema.org/example/calendar.json >calendar.json
 ```
 
 Download ramldt2jsonschema
-```
-npm install --save ramldt2jsonschema
+```sh
+$ npm install --save ramldt2jsonschema
 ```
 
 Write a small node app
-```
-
+```javascript
 # File: index.js
-var r2j = require('ramldt2jsonschema')
-var fs = require('fs')
+const r2j = require('ramldt2jsonschema')
+const fs = require('fs')
+const yaml = require('yaml')
 
-var jsonData = fs.readFileSync('./calendar.json').toString()
+const jsonData = fs.readFileSync('./calendar.json').toString()
 
-r2j.js2dt(jsonData, 'Calendar', function (err, raml) {
-  var library = '#%RAML 1.0 Library\n' + raml
-  fs.writeFileSync('calendar_library.raml', library)
-})
+const raml = r2j.js2dt(jsonData, 'Calendar')
+
+// you can decide if you want a RAML Library
+const library = '#%RAML 1.0 Library\n' + yaml.safeDump({ types: raml }, {'noRefs': true})
+fs.writeFileSync('calendar_library.raml', library)
+
+// or a Datatype (this only works properly if there were no extra definitions in the JSON schema)
+const datatype = '#%RAML 1.0 DataType\n' + yaml.safeDump(raml['Calendar'], {'noRefs': true})
+fs.writeFileSync('calendar_datatype.raml', datatype)
 ```
