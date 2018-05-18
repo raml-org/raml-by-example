@@ -6,6 +6,7 @@ uses:
 types:
   ResourceLink:
     displayName: Resource Link
+    description: Item Resource Link type
     properties:
       href: string
       rel:
@@ -15,12 +16,14 @@ types:
 
   ImageLink:
     displayName: Image Link
+    description: Item Image Link type
     properties:
       href: string
       rel:
         enum: [SmallImage, MediumImage, LargeImage]
 
   Item:
+    description: Store item
     type: object
     minProperties: 1
     properties:
@@ -38,6 +41,8 @@ types:
       storeItem?: boolean
 
   Sku:
+    displayName: SKU
+    description: Item SKU
     type: Item
     storeItem: true
     properties:
@@ -46,7 +51,8 @@ types:
       stockQuantity: integer
 
   GetItemsResponse:
-    displayName: Get Items Response
+    displayName: GET Items response
+    description: Response to GET Items request
     properties:
       links: ResourceLink[]
       collection:
@@ -86,7 +92,8 @@ types:
                 rel: SmallImage
 
   GetItemResponse:
-    displayName: Get Item Response
+    displayName: Get Item response
+    description: Response to GET Item request
     type: Item
     storeItem: false
     properties:
@@ -131,24 +138,25 @@ types:
                 rel: SmallImage
 
   GetMyWishListResponse:
-    displayName: GET My Wish List Response
+    displayName: GET My Wish List response
     description: GET requests response of My With List endpoint
     type: GetItemsResponse
 
   PostMyWishListRequest:
-    displayName: POST My Wish List Response
+    displayName: POST My Wish List response
     description: POST requests response of My With List endpoint
     properties:
       sku: string
     example:
       displayName: Simple response
-      description: POST My Wish List Response example
+      description: POST My Wish List response example
       strict: false
       value:
         sku: B004GW14E4
 
 
   GetMyBasketResponse:
+    displayName: GET My Basket response
     description: GET requests response of My Basket endpoint
     properties:
       links: ResourceLink[]
@@ -189,7 +197,8 @@ types:
           quantity: 1
 
   PostMyBasketRequest:
-    description: POST requests response of My Basket endpoint
+    displayName: POST My Basket request
+    description: POST requests of My Basket endpoint
     properties:
       sku:
         type: string
@@ -203,7 +212,8 @@ types:
       price: 10.99
 
   PostCheckoutRequest:
-    description: POST requests response of Checkout endpoint
+    displayName: POST Checkout request
+    description: POST requests of Checkout endpoint
     properties:
       pickupLocation: string
       items:
@@ -224,6 +234,8 @@ types:
           quantity: 3
 
   GetMyProfileResponse:
+    displayName: GET My Profile response
+    description: Response to GET My Profile request
     properties:
       firstName: string
       lastName: string
@@ -240,6 +252,8 @@ types:
         - mobilePush
 
   GetBrandsResponse:
+    displayName: GET Brands response
+    description: Response to GET Brands request
     properties:
       links: ResourceLink[]
       items: string[]
@@ -252,6 +266,8 @@ types:
         - Now Foods
 
   GetCategoriesResponse:
+    displayName: GET Categories response
+    description: Response to GET Categories request
     properties:
       links: ResourceLink[]
       items: string[]
@@ -264,6 +280,8 @@ types:
         - Perfumes
 
   GetMyOrdersResponse:
+    displayName: GET My Orders response
+    description: Response to GET My Orders request
     properties:
       links: ResourceLink[]
       orders:
@@ -281,15 +299,23 @@ types:
                   quantity: integer
 
   GetRecommendationsResponse:
+    displayName: GET Recommendations response
+    description: Response to GET Recommendations request
     type: GetItemsResponse
 
   GetTrendingItemsResponse:
+    displayName: GET Trending Items response
+    description: Response to GET Trending Items request
     type: GetItemsResponse
 
   GetPromotionsResponse:
+    displayName: GET Promotions response
+    description: Response to GET Promotions request
     type: GetItemsResponse
 
   GetReviewsResponse:
+    displayName: GET Reviews response
+    description: Response to GET Reviews request
     properties:
       collection:
         properties:

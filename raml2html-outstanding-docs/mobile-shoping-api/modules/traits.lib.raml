@@ -3,19 +3,23 @@
 traits:
   pageable:
     displayName: Pageable
+    description: Pageable results
     queryParameters:
       pageIndex:
+        description: Pagination page index
         type: integer
         default: 0
         example: 1
         required: false
       pageSize:
+        description: Number of results on a page
         type: integer
         default: 10
         example: 10
         required: false
   searchable:
     displayName: Searchable
+    description: Searchable results
     queryParameters:
       name:
         type: string
@@ -31,6 +35,7 @@ traits:
         example: Naturtint
   imageable:
     displayName: Imageable
+    description: Imageable results
     queryParameters:
       imageType:
         description: Comma , separated list just like in example. One alone may be present

@@ -8,6 +8,7 @@ uses:
 resourceTypes:
   base:
     get:
+      displayName: GET <<resourcePath>>
       responses:
         200:
           body:
@@ -16,13 +17,16 @@ resourceTypes:
   read-only-collection:
     type: base
     get:
+      displayName: GET <<resourcePath>>
       is: [tra.pageable]
   collection:
     type: read-only-collection
     put?:
+      displayName: PUT <<resourcePath>>
       body:
         type: typ.Post<<resourcePathName | !uppercamelcase>>Request
     post:
+      displayName: POST <<resourcePath>>
       body:
         type: typ.Post<<resourcePathName | !uppercamelcase>>Request
       responses:
@@ -35,21 +39,25 @@ resourceTypes:
               required: true
   controller:
     post:
+      displayName: POST <<resourcePath>>
       responses:
         204:
           description: Done!
   member:
     type: base
     put?:
+      displayName: PUT <<resourcePath>>
       body:
         type: typ.Put<<resourcePathName | !uppercamelcase>>Request
       responses:
         204:
           description: Modified
     patch?:
+      displayName: PATCH <<resourcePath>>
       body:
         type: typ.Patch<<resourcePathName | !uppercamelcase>>Request
     delete?:
+      displayName: DELETE <<resourcePath>>
       responses:
         204:
           description: Delete
