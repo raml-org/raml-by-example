@@ -34,7 +34,7 @@ raml2html --theme raml2html-slate-theme mobile-shoping-api/api.raml > api_spec.h
 ## Hosting the HTML
 
 When this article is merged and finished, just submit the HTML link to `rawgit.com` and copy the link that it generates.
-E.g. pasting [this link](https://github.com/postatum/raml-playground/blob/raml2html-outstanding-docs/raml2html-outstanding-docs/api_spec.html) produced [this link](https://rawgit.com/postatum/raml-playground/raml2html-outstanding-docs/raml2html-outstanding-docs/mobile-shoping-api/api_spec.html).
+E.g. pasting [this link](https://github.com/postatum/raml-playground/blob/raml2html-outstanding-docs/raml2html-outstanding-docs/api_spec.html) produced [this link](https://rawgit.com/postatum/raml-playground/raml2html-outstanding-docs/raml2html-outstanding-docs/api_spec.html).
 
 Note the link type that should be passed to rawgit - it's a link to the file on github, not its raw version.
 
