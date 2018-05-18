@@ -18,17 +18,16 @@ I think all necessary description can be taken from its repo README https://gith
 
 ## Generating the html
 
-First you need to install `raml2html` and `raml2html-slate-theme` scheme:
+First you need to install `raml2html`:
 
 ```sh
 npm install -g raml2html
-npm install -g raml2html-slate-theme
 ```
 
 Then you can pefrorm conversion with:
 
 ```sh
-raml2html --theme raml2html-slate-theme mobile-shoping-api/api.raml > api_spec.html
+raml2html mobile-shoping-api/api.raml > api_spec.html
 ```
 
 ## Hosting the HTML
