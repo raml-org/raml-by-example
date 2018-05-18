@@ -41,3 +41,4 @@ Note the link type that should be passed to rawgit - it's a link to the file on 
 ## Notes
 
 * Had to manually add `displayName` to methods that use traits because for some reason `raml2html` titled them by the trait name. E.g. `GET /items` was titled as `Searchable`
+* Picked this example project as a base for article example project https://github.com/raml-org/raml-examples/tree/master/others/alainn-mobile-shopping . Renamed few things and changed urls. Wanted to make RAML about unicorns and magic, but then decided that Online Store example would be more relatable.
