@@ -1,0 +1,611 @@
+#%RAML 1.0 Library
+usage: >
+  jsonapi collection-item library: jsonapi-based resourceTypes and traits.
+  
+  This is a companion to the jsonApiLibrary.raml Library.
+  
+  **resourceTypes**
+  The `collection` and `item` resourceTypes follow the [{json:api} 1.0 recommendations](http://jsonapi.org/recommendations/#urls) 
+  regarding URL naming: a resourcePathName should be the same as it's type (both plural nouns). However, because
+  we may be using RAML Libraries for those type definitions, one can't use *resourcePathName* but must still
+  provide a *dataType*.
+  
+  The `relationshipCollection` is a special resourceType for _to-many_ `relationships` that allows GET, POST, PATCH & DELETE.
+  (Normal `collection`s don't allow PATCH or DELETE of the entire collection and the meaning of DELETE for relationships
+  is quite different.) The `relationshipItem` is a special resourceType for _to-one_ `relationships` that allows GET & PATCH.
+  
+  **collection required parameters**:
+  - dataType: the response RAML type (e.g. `mythings`). You must also define types named e.g. `mythings_post` and
+    `mythings_patch`. These are all subclasses of on another with various properties labeled as true. This deals
+    with the requirement that response data must have `id` and `type` keys which post data can leave out the `id`
+    but must have all the required primary data attributes and patch data can leave out required attributes as it
+    only sends changes.
+  - exampleCollection: an example collection of the dataType.
+  - exampleItem: an example item of the dataType.
+  
+  **traits**
+  Traits of `pageable`, `sortable`, `sparse`, `filterable`, `includable` are provided which describe the various
+  [standard](http://jsonapi.org/format) query parameters, including [recommended](http://jsonapi.org/recommendations) usage.
+  For convenience, the `all-the-things` trait combines all the above-listed traits.
+    
+  Usage example:
+    ```
+    uses:
+      col: libraries/jsonApiCollections.raml
+    /widgets:
+      type: 
+        col.collection: 
+          dataType: wid.widgets
+          exampleCollection: !include examples/WidgetCollectionExample.raml
+          exampleItem: !include examples/WidgetItemExample.raml
+      get:
+        is: [ col.pageable, col.sparse ]
+    ```
+  
+  For reasons I don't quite understand, you must use this with the same `uses` key name
+  (api) in your main api.raml and any other libraries that reference types defined in jsonApiLibrary.raml.
+  For other reasons I don't understand, this can't just be part of jsonApiLibrary.raml.
+  
+  Copyright (c) 2017 The Trustess of Columbia University in the City of New York
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+uses:
+  api: jsonApiLibrary.raml
+resourceTypes:
+  collection:
+    usage: |
+      This resourceType should be used for any collection of items.
+      Parameters:
+        dataType: the type name of the primary data
+        exampleCollection: an example of the response for a GET of the collection.
+        exampleItem: an example of the body/response for a POST to the collection.
+    description: The collection of <<resourcePathName>>
+    get:
+      description: Get a collection of <<resourcePathName>>.
+      responses: 
+        200:
+          description: Success. Response contains the primary data and optional metadata.
+          body: 
+            application/vnd.api+json:
+              type: api.success
+              properties: 
+                data: <<dataType>>[]
+              example: 
+                <<exampleCollection>>
+        404:
+          description: Not found. Response contains a list of error(s).
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "404"
+                    title: Resource not found
+                    detail: <<resourcePath>> not found 
+    post:
+      description: Create a new <<resourcePathName|!singularize>>.
+      body: 
+        application/vnd.api+json:
+          type: object # ??
+          properties:
+            data: <<dataType>>_post
+          additionalProperties: false
+      responses:
+        201:
+          description: Created. Response contains the created <<resourcePathName|!singularize>>
+            Location header *may* contain the URI.
+          headers: 
+            location?: api.uristring
+          body: 
+            application/vnd.api+json:
+              type: api.success
+              properties: 
+                data: <<dataType>>
+              example: <<exampleItem>>
+        202:
+          description: Accepted for processing. Request has not yet completed.
+        204:
+          description: No Content.
+        403:
+          description: Forbidden
+          body:
+            application/vnd.api+json:
+              type: api.failure
+        404:
+          description: Related resource not found
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "404"
+                    title: Resource not found
+                    detail: related resource not found 
+        409:
+          description: Failed to create a resource with a client-generated ID that already exists.
+            Or, the resource object’s type is not among the type(s) that constitute the collection represented by the endpoint.
+            Or, the update would violate other server-enforced constraints including type and id mismatch.
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "409"
+                    title: Conflict
+  item:
+    usage: |
+      This resourceType should be used for any single items
+      Parameters:
+        dataType: the type name of the primary data (must subclass api.response)
+        relType: the type name of the relationships
+        exampleItem: an example of the api.success response
+    description: The <<resourcePathName>> item
+    get:
+      responses: 
+        200:
+          description: Success. Response contains the primary data and optional metadata.
+          body: 
+            application/vnd.api+json:
+              type: api.success
+              properties: 
+                data: <<dataType>>
+              example: 
+                <<exampleItem>>
+        404:
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "404"
+                    title: Resource not found
+                    detail: <<resourcePath>> not found 
+    patch:
+      description: Update an existing <<resourcePath|!singularize>>.
+      body: 
+        application/vnd.api+json:
+          type: object # ??
+          properties:
+            data: <<dataType>>_patch
+          additionalProperties: false
+      responses:
+        200:
+          description: |
+            The PATCH was accepted and some values may have changed beyond those specified.
+            The response contains the result of those updates.
+          body: 
+            application/vnd.api+json:
+              type: api.success
+              properties: 
+                data: <<dataType>>
+              example: <<exampleItem>>
+        202:
+          description: Accepted for processing. Request has not yet completed.
+        204:
+          description: No Content. Only those changes submitted have been applied.
+        403:
+          description: Forbidden
+          body:
+            application/vnd.api+json:
+              type: api.failure
+        404:
+          description: Not Found
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "404"
+                    title: Resource not found
+                    detail: <<resourcePath>> not found 
+        409:
+          description: Failed to update a resource if that update would violate other server-enforced constraints
+            (such as a uniqueness constraint on a property other than id).
+            Or, the resource object’s type and id do not match the server’s endpoint.
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "409"
+                    title: Conflict
+    delete:
+      description: Delete an existing <<resourcePath|!singularize>>.
+      responses:
+        200:
+          description: Sucessfully deleted. Top-level meta-data response provided.
+          body: 
+            application/vnd.api+json:
+              type: api.info
+        202:
+          description: Accepted for processing. Request has not yet completed.
+          # does this one return metadata?
+        204:
+          description: Sucessfully deleted. No content returned.
+        404:
+          description: Not found.
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "404"
+                    title: Resource not found
+                    detail: <<resourcePath>> not found
+  relationshipCollection:
+    displayName: Relationship collection
+    description: A [relationship collection](http://jsonapi.org/format/#crud-updating-to-many-relationships)
+    get:
+      description: Get a collection of <<resourcePathName>>.
+      responses: 
+        200:
+          description: Success. Response contains the relationship linkage and optional metadata.
+          body: 
+            application/vnd.api+json:
+              type: api.success
+              properties: 
+                data: api.relationshipToMany
+              example:
+                data: 
+                  - type: theType
+                    id: theId
+                  - type: anotherType
+                    id: anotherId
+        404:
+          description: Not found. Response contains a list of error(s).
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "404"
+                    title: Resource not found
+                    detail: <<resourcePath>> not found 
+    post:
+      description: Add new relationships.
+      body: 
+        application/vnd.api+json:
+          type: api.relationshipMember
+          properties: 
+            data: api.relationshipToMany
+          additionalProperties: false
+          example: 
+            data: 
+              - type: theType
+                id: theId
+              - type: theType
+                id: anotherId
+      responses:
+        201:
+          description: Created. Response contains the created <<resourcePathName|!singularize>>
+            Location header *may* contain the URI.
+          headers: 
+            location?: api.uristring
+          body: 
+            application/vnd.api+json:
+              type: api.success
+              properties: 
+                data: api.relationshipToMany
+              example: 
+                data: 
+                  - type: theType
+                    id: theId
+                  - type: theType
+                    id: anotherId
+        202:
+          description: Accepted for processing. Request has not yet completed.
+        204:
+          description: No Content.
+        403:
+          description: Forbidden
+          body:
+            application/vnd.api+json:
+              type: api.failure
+        404:
+          description: Related resource not found
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "404"
+                    title: Resource not found
+                    detail: related resource not found 
+        409:
+          description: Failed to create a resource with a client-generated ID that already exists.
+            Or, the resource object’s type is not among the type(s) that constitute the collection represented by the endpoint.
+            Or, the update would violate other server-enforced constraints including type and id mismatch.
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "409"
+                    title: Conflict
+    patch:
+      description: >
+        Update one or more existing relationships. To delete all relationships
+        patch with an empty list: `{"data": []}`
+      body: 
+        application/vnd.api+json:
+          type: api.relationshipMember
+          properties: 
+            data: api.relationshipToMany
+          additionalProperties: false
+          example:
+            data:
+              - type: TheType
+                id: TheId
+              - type: AnotherType
+                id: AnotherId
+      responses:
+        200:
+          description: |
+            The PATCH was accepted and some values may have changed beyond those specified.
+            The response contains the result of those updates.
+          body: 
+            application/vnd.api+json:
+              type: api.success
+              properties: 
+                data: api.relationshipToMany
+              example:
+                data: 
+                  - type: TheType
+                    id: TheId
+                  - type: AnotherType
+                    id: AnotherId
+        202:
+          description: Accepted for processing. Request has not yet completed.
+        204:
+          description: No Content. Only those changes submitted have been applied.
+        403:
+          description: Forbidden
+          body:
+            application/vnd.api+json:
+              type: api.failure
+        404:
+          description: Not Found
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "404"
+                    title: Resource not found
+                    detail: <<resourcePath>> not found 
+        409:
+          description: Failed to update a resource if that update would violate other server-enforced constraints
+            (such as a uniqueness constraint on a property other than id).
+            Or, the resource object’s type and id do not match the server’s endpoint.
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "409"
+                    title: Conflict
+    delete:
+      description: Delete relationships. Provide a list of relationship identifiers to delete from the list of relationships.
+      body: 
+        application/vnd.api+json:
+          type: api.relationshipMember
+          properties: 
+            data: api.relationshipToMany
+          additionalProperties: false
+          example: 
+            data: 
+              - type: theType
+                id: theId
+              - type: theType
+                id: anotherId
+      responses:
+        200:
+          description: |
+            The DELETE was accepted and some values may have changed beyond those specified.
+            The response contains the result of those updates.
+          body: 
+            application/vnd.api+json:
+              type: api.success
+              properties: 
+                data: api.relationshipToMany
+              example: 
+                data: 
+                  - type: theType
+                    id: theId
+                  - type: theType
+                    id: anotherId
+        202:
+          description: Accepted for processing. Request has not yet completed.
+        204:
+          description: No Content.
+        403:
+          description: Forbidden
+          body:
+            application/vnd.api+json:
+              type: api.failure
+        404:
+          description: Related resource not found
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "404"
+                    title: Resource not found
+                    detail: related resource not found 
+        409:
+          description: Failed to create a resource with a client-generated ID that already exists.
+            Or, the resource object’s type is not among the type(s) that constitute the collection represented by the endpoint.
+            Or, the update would violate other server-enforced constraints including type and id mismatch.
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "409"
+                    title: Conflict
+  relationshipItem:
+    description: A [relationship item](http://jsonapi.org/format/#crud-updating-to-one-relationships)
+    get:
+      responses: 
+        200:
+          description: Success. Response contains the primary data and optional metadata.
+          body: 
+            application/vnd.api+json:
+              type: api.success
+              properties: 
+                data: api.relationshipToOne
+              example:
+                data: 
+                  type: theType
+                  id: theId
+        404:
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "404"
+                    title: Resource not found
+                    detail: <<resourcePath>> not found 
+    patch:
+      description: >
+        Update an existing relationship. To remove the relationship: patch `{"data": null}`
+      body: 
+        application/vnd.api+json:
+          type: api.relationshipMember
+          properties: 
+            data: api.relationshipToOne
+          additionalProperties: false
+          example:
+            data:
+              type: theType
+              id: theId
+      responses:
+        200:
+          description: |
+            The PATCH was accepted and some values may have changed beyond those specified.
+            The response contains the result of those updates.
+          body: 
+            application/vnd.api+json:
+              type: api.success
+              properties: 
+                data: api.relationshipToOne
+              example:
+                data: 
+                  type: theType
+                  id: theId
+        202:
+          description: Accepted for processing. Request has not yet completed.
+        204:
+          description: No Content. Only those changes submitted have been applied.
+        403:
+          description: Forbidden
+          body:
+            application/vnd.api+json:
+              type: api.failure
+        404:
+          description: Not Found
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "404"
+                    title: Resource not found
+                    detail: <<resourcePath>> not found 
+        409:
+          description: Failed to update a resource if that update would violate other server-enforced constraints
+            (such as a uniqueness constraint on a property other than id).
+            Or, the resource object’s type and id do not match the server’s endpoint.
+          body:
+            application/vnd.api+json:
+              type: api.failure
+              example:
+                errors:
+                  - status: "409"
+                    title: Conflict
+traits: 
+  pageable:
+    description: |
+      Collection response is [paginated](http://jsonapi.org/format/#fetching-pagination) with links: {self, first, next, prev, last} references.
+    queryParameters: 
+      page[number]:
+        description: Starts at page number
+        type: integer
+        required: false
+      page[size]:
+        description: Page size. Number of items per page.
+        type: integer
+        required: false
+      page[offset]:
+        description: Page offset. Starting item number.
+        type: integer
+        required: false
+      page[limit]:
+        description: Page limit. Limit on number of items or pages returned.
+        type: integer
+        required: false
+      page[cursor]:
+        description: Page cursor.
+        type: integer
+        required: false
+  sortable:
+    description: |
+      Collection response is [sorted](http://jsonapi.org/format/#fetching-sorting) in ascending or descending(-) order.
+    queryParameters: 
+      sort:
+        description: |
+          list of type.attributes to sort by. Use a `-` sign to indicate a descending sort.
+        type: string
+        required: false
+        example: |
+          sort=Location.warehouse,-Widget.qty
+  sparse:
+    description: |
+      Collection response has [sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets).
+    queryParameters: 
+      fields[{type}]:
+        description: |
+          Return only the listed attributes for the given type.
+        type: string
+        required: false
+        example: |
+          fields[Location]=warehouse,aisle&fields[Widget]=name
+  filterable:
+    description: filtering per the jsonapi [recommendation](http://jsonapi.org/recommendations/#filtering) (not in the base spec).
+    queryParameters: 
+      filter[{attr}]:
+        description: |
+          list of type.attributes and values to filter by. 
+          Use a comma-separated list for OR.
+          Use multiple filter[{attr}] queryParameters for AND.
+        type: string
+        required: false
+        example: |
+          filter[Location.warehouse]=NYC,Briarcliff+Manor&filter[Widget.qty]>3
+  includable:
+    description: Collection response should [include](http://jsonapi.org/format/#fetching-includes)
+      only the related resources listed.
+    queryParameters: 
+      include:
+        description: |
+          The value of the include parameter MUST be a comma-separated list of relationship paths. A relationship path is a dot-separated list of relationship names.
+        type: string
+        required: false
+        example: |
+          include=Locations.Cities
+  all-the-things:
+    description: |
+      All the collection queryParameter traits: pageable, sortable, sparse, filterable
+    is: [ pageable, sortable, sparse, filterable, includable ]

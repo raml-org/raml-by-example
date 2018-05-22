@@ -1,0 +1,1 @@
+RAML Libraries `jsonApiCollections.raml` and `jsonApiLibrary.raml` taken from https://github.com/n2ygk/raml-snippets

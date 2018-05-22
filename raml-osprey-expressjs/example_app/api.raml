@@ -1,9 +1,45 @@
 #%RAML 1.0
-title: Example API
+title: Pokemon API
 
-/users:
+uses:
+  api: libraries/jsonApiLibrary.raml
+  col: libraries/jsonApiCollections.raml
+
+types:
+  PokemonAttrs:
+    description: Pokemon attributes without any meta, type, id, etc.
+    type: api.attributes
+    properties:
+      name: string
+      generation: number
+      types: string[]
+      species: string
+      abilities: string[]
+      weightKg: number
+  Pokemon:
+    type: Pokemon_post
+    properties:
+      id:
+        required: true
+  Pokemon_post:
+    type: api.resource_post
+    properties:
+      attributes:
+        type: PokemonAttrs
+  Pokemon_patch:
+    type: Pokemon
+
+/pokemon:
+  type:
+    col.collection:
+      dataType: Pokemon
+      exampleCollection: !include examples/PokemonCollectionExample.json
+      exampleItem: !include examples/PokemonItemExample.json
   get:
-    queryParameters:
-      sort:
-        enum: [username, name]
+    is: [ col.sortable ]
 
+  /{id}:
+    type:
+      col.item:
+        dataType: Pokemon
+        exampleItem: !include examples/PokemonItemExample.json
