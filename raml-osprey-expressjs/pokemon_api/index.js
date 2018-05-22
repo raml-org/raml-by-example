@@ -1,19 +1,29 @@
 var express = require('express')
-var osprey = require('../..')
+var osprey = require('osprey')
 var join = require('path').join
 
 var PORT = process.env.PORT || 3000
-
 var router = osprey.Router()
+var db = {}
 
-router.get('/users', function (req, res) {
-  res.json([
-    {
-      username: 'blakeembrey',
-      password: 'hunter2'
-    }
-  ])
-})
+router.route('/pokemon')
+  .get(function (req, res) {
+
+  })
+  .post(function (req, res) {
+
+  })
+
+router.route('/pokemon/{id}', {id: {type: 'string'}})
+  .get(function (req, res) {
+    console.log(req.params.id)
+  })
+  .patch(function (req, res) {
+
+  })
+  .delete(function (req, res) {
+
+  })
 
 osprey.loadFile(join(__dirname, 'api.raml'))
   .then(function (middleware) {
@@ -23,4 +33,3 @@ osprey.loadFile(join(__dirname, 'api.raml'))
       console.log('Application listening on ' + PORT + '...')
     })
   })
-

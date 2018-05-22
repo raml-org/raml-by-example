@@ -1,6 +1,6 @@
 {
-  "name": "exampleapp",
-  "description": "Example app",
+  "name": "pokemonapi",
+  "description": "Pokemon API",
   "version": "0.0.1",
   "author": "MuleSoft",
   "license": "MIT",
