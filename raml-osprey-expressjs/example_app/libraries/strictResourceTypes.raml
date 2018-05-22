@@ -1,0 +1,49 @@
+usage: Extended resourceTypes according to JSON API 1.0
+uses:
+  col: jsonApiCollections.raml
+  api: jsonApiLibrary.raml
+
+traits:
+  strict:
+    responses:
+      406:
+        description: Not Acceptable
+        body:
+          application/vnd.api+json:
+            type: api.failure
+            example:
+              errors:
+                - status: "406"
+                  title: Not Acceptable
+                  detail: >
+                    Accept header contains the JSON API media type and
+                    all instances of that media type are modified with
+                    media type parameters
+      415:
+        description: Unsupported Media Type
+        body:
+          application/vnd.api+json:
+            type: api.failure
+            example:
+              errors:
+                - status: "415"
+                  title: Unsupported Media Type
+                  detail: >
+                    Request specifies the header Content-Type:
+                    application/vnd.api+json with any media type parameters.
+
+resourceTypes:
+  collection:
+    type: col.collection
+    get:
+      is: [ strict ]
+    post:
+      is: [ strict ]
+  item:
+    type: col.item
+    get:
+      is: [ strict ]
+    patch:
+      is: [ strict ]
+    delete:
+      is: [ strict ]
