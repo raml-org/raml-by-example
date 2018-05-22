@@ -8,7 +8,6 @@ mediaType: application/vnd.api+json
 uses:
   api: libraries/jsonApiLibrary.raml
   col: libraries/jsonApiCollections.raml
-  strict: libraries/strictResourceTypes.raml
 
 types:
   PokemonAttrs:
@@ -36,7 +35,7 @@ types:
 
 /pokemon:
   type:
-    strict.collection:
+    col.collection:
       dataType: Pokemon
       exampleCollection: !include examples/PokemonCollectionExample.yaml
       exampleItem: !include examples/PokemonItemExample.yaml
@@ -45,6 +44,6 @@ types:
 
   /{id}:
     type:
-      strict.item:
+      col.item:
         dataType: Pokemon
         exampleItem: !include examples/PokemonItemExample.yaml
