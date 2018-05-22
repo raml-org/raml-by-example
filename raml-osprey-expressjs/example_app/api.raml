@@ -1,5 +1,9 @@
 #%RAML 1.0
 title: Pokemon API
+description: Pokemon information API
+version: v1
+baseUri: https://localhost:3000/{version}
+mediaType: application/vnd.api+json
 
 uses:
   api: libraries/jsonApiLibrary.raml
@@ -33,8 +37,8 @@ types:
   type:
     col.collection:
       dataType: Pokemon
-      exampleCollection: !include examples/PokemonCollectionExample.json
-      exampleItem: !include examples/PokemonItemExample.json
+      exampleCollection: !include examples/PokemonCollectionExample.yaml
+      exampleItem: !include examples/PokemonItemExample.yaml
   get:
     is: [ col.sortable ]
 
@@ -42,4 +46,4 @@ types:
     type:
       col.item:
         dataType: Pokemon
-        exampleItem: !include examples/PokemonItemExample.json
+        exampleItem: !include examples/PokemonItemExample.yaml

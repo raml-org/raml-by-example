@@ -1,0 +1,13 @@
+type: Pokemon
+id: "1"
+attributes:
+  name: Bulbasaur
+  generation: 1
+  types:
+    - Grass
+    - Poison
+  species: Seed Pokemon
+  abilities:
+    - Overgrow
+    - Chlorophyll
+  weightKg: 7
