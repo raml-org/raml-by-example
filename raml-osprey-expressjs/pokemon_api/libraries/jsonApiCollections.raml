@@ -1,64 +1,4 @@
 #%RAML 1.0 Library
-usage: >
-  jsonapi collection-item library: jsonapi-based resourceTypes and traits.
-
-  This is a companion to the jsonApiLibrary.raml Library.
-
-  **resourceTypes**
-  The `collection` and `item` resourceTypes follow the [{json:api} 1.0 recommendations](http://jsonapi.org/recommendations/#urls)
-  regarding URL naming: a resourcePathName should be the same as it's type (both plural nouns). However, because
-  we may be using RAML Libraries for those type definitions, one can't use *resourcePathName* but must still
-  provide a *dataType*.
-
-  The `relationshipCollection` is a special resourceType for _to-many_ `relationships` that allows GET, POST, PATCH & DELETE.
-  (Normal `collection`s don't allow PATCH or DELETE of the entire collection and the meaning of DELETE for relationships
-  is quite different.) The `relationshipItem` is a special resourceType for _to-one_ `relationships` that allows GET & PATCH.
-
-  **collection required parameters**:
-  - dataType: the response RAML type (e.g. `mythings`). You must also define types named e.g. `mythings_post` and
-    `mythings_patch`. These are all subclasses of on another with various properties labeled as true. This deals
-    with the requirement that response data must have `id` and `type` keys which post data can leave out the `id`
-    but must have all the required primary data attributes and patch data can leave out required attributes as it
-    only sends changes.
-  - exampleCollection: an example collection of the dataType.
-  - exampleItem: an example item of the dataType.
-
-  **traits**
-  Traits of `pageable`, `sortable`, `sparse`, `filterable`, `includable` are provided which describe the various
-  [standard](http://jsonapi.org/format) query parameters, including [recommended](http://jsonapi.org/recommendations) usage.
-  For convenience, the `all-the-things` trait combines all the above-listed traits.
-
-  Usage example:
-    ```
-    uses:
-      col: libraries/jsonApiCollections.raml
-    /widgets:
-      type:
-        col.collection:
-          dataType: wid.widgets
-          exampleCollection: !include examples/WidgetCollectionExample.raml
-          exampleItem: !include examples/WidgetItemExample.raml
-      get:
-        is: [ col.pageable, col.sparse ]
-    ```
-
-  For reasons I don't quite understand, you must use this with the same `uses` key name
-  (api) in your main api.raml and any other libraries that reference types defined in jsonApiLibrary.raml.
-  For other reasons I don't understand, this can't just be part of jsonApiLibrary.raml.
-
-  Copyright (c) 2017 The Trustess of Columbia University in the City of New York
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
 uses:
   api: jsonApiLibrary.raml
 resourceTypes:
@@ -67,6 +7,7 @@ resourceTypes:
       This resourceType should be used for any collection of items.
       Parameters:
         dataType: the type name of the primary data
+        dataTypePost: the type name of the primary data used in POST requests
         exampleCollection: an example of the response for a GET of the collection.
         exampleItem: an example of the body/response for a POST to the collection.
     description: The collection of <<resourcePathName>>
@@ -80,8 +21,7 @@ resourceTypes:
               type: api.success
               properties:
                 data: <<dataType>>[]
-              example:
-                <<exampleCollection>>
+              example: <<exampleCollection>>
         404:
           description: Not found. Response contains a list of error(s).
           body:
@@ -98,7 +38,7 @@ resourceTypes:
         application/vnd.api+json:
           type: object # ??
           properties:
-            data: <<dataType>>_post
+            data: <<dataTypePost>>
           additionalProperties: false
       responses:
         201:
@@ -147,6 +87,7 @@ resourceTypes:
       This resourceType should be used for any single items
       Parameters:
         dataType: the type name of the primary data (must subclass api.response)
+        dataTypePatch: the type name of the primary data used in PATCH requests
         relType: the type name of the relationships
         exampleItem: an example of the api.success response
     description: The <<resourcePathName>> item
@@ -176,7 +117,7 @@ resourceTypes:
         application/vnd.api+json:
           type: object # ??
           properties:
-            data: <<dataType>>_patch
+            data: <<dataTypePatch>>
           additionalProperties: false
       responses:
         200:

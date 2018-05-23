@@ -11,6 +11,7 @@ uses:
 
 types:
   PokemonAttrs:
+    displayName: PokemonAttrs
     description: Pokemon attributes without any meta, type, id, etc.
     type: api.attributes
     properties:
@@ -21,22 +22,28 @@ types:
       abilities: string[]
       weightKg: number
   Pokemon:
-    type: Pokemon_post
+    type: PokemonPOST
+    description: Pokemon type
     properties:
       id:
         required: true
-  Pokemon_post:
+  PokemonPOST:
     type: api.resource_post
+    displayName: PokemonPOST
+    description: Pokemon POST type
     properties:
       attributes:
         type: PokemonAttrs
-  Pokemon_patch:
+  PokemonPATCH:
     type: Pokemon
+    displayName: PokemonPATCH
+    description: Pokemon PATCH type
 
 /pokemon:
   type:
     col.collection:
       dataType: Pokemon
+      dataTypePost: PokemonPOST
       exampleCollection: !include examples/PokemonCollectionExample.json
       exampleItem: !include examples/PokemonItemExample.json
   get:
@@ -46,4 +53,5 @@ types:
     type:
       col.item:
         dataType: Pokemon
+        dataTypePatch: PokemonPATCH
         exampleItem: !include examples/PokemonItemExample.json
