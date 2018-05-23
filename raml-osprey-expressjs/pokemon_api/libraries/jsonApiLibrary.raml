@@ -6,9 +6,6 @@ types:
     type: object
     additionalProperties: false
     properties:
-      data:
-        type: data
-        required: true
       included:
         type: resource[]
         required: false
@@ -24,6 +21,18 @@ types:
       jsonapi:
         type: jsonapi
         required: false
+  collectionSuccess:
+    description: A succesful (2xx) collection response body.
+    properties:
+      data:
+        type: resource[]
+        description: The document's primary data collection of resources.
+  itemSuccess:
+    description: A succesful (2xx) item response body.
+    properties:
+      data:
+        type: resource
+        description: The document's primary data resource.
   failure:
     description: A failure (4xx) response body.
     type: object
@@ -60,9 +69,6 @@ types:
     description: Where specified, a meta member can be used to include non-standard meta-information.
     type: object
     additionalProperties: true
-  data:
-    description: The document's \"primary data\" is a representation of the resource or collection of resources.
-    type: resource | resource[] | nil
   resource:
     description: A resource must have both a type and id. Additional properties (see resource_post) are optional.
     type: resource_post
