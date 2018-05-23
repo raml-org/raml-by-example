@@ -22,28 +22,17 @@ types:
       abilities: string[]
       weightKg: number
   Pokemon:
-    type: PokemonPOST
+    type: api.resource
     description: Pokemon type
-    properties:
-      id:
-        required: true
-  PokemonPOST:
-    type: api.resource_post
-    displayName: PokemonPOST
-    description: Pokemon POST type
     properties:
       attributes:
         type: PokemonAttrs
-  PokemonPATCH:
-    type: Pokemon
-    displayName: PokemonPATCH
-    description: Pokemon PATCH type
 
 /pokemon:
   type:
     col.collection:
       dataType: Pokemon
-      dataTypePost: PokemonPOST
+      dataTypePost: Pokemon
       exampleCollection: !include examples/PokemonCollectionExample.json
       exampleItem: !include examples/PokemonItemExample.json
   get:
@@ -53,5 +42,5 @@ types:
     type:
       col.item:
         dataType: Pokemon
-        dataTypePatch: PokemonPATCH
+        dataTypePatch: Pokemon
         exampleItem: !include examples/PokemonItemExample.json
