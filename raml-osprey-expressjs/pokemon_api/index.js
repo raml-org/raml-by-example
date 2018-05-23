@@ -55,6 +55,9 @@ router.route('/pokemon')
   .post(setCtHeader, (req, res) => {
     var data = req.body.data
     pokemonDb[data.id] = data.attributes
+    res.set(
+      'Location',
+      `https://localhost:3000/v1/pokemon/${data.id}`)
     res.status(201).json({
       data: wrapData(data.attributes, data.id)
     })
