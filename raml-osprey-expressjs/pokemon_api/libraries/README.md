@@ -1,1 +1,1 @@
-RAML Libraries `jsonApiCollections.raml` and `jsonApiLibrary.raml` taken from https://github.com/n2ygk/raml-snippets
+RAML Libraries `jsonApiCollections.raml` and `jsonApiLibrary.raml` taken from https://github.com/n2ygk/raml-snippets and simplified to only defined elements used in the example app.
