@@ -1,15 +1,10 @@
 ## Project elements
 
 *pokemon_api/package.json* - Package file with dependencies.
-
 *pokemon_api/api.raml* - JSON API spec that defines few routes, types and uses libraries. Available endpoints: `GET /pokemon, POST /pokemon, GET /pokemon/{id}, PATCH /pokemon/{id}, DELETE /pokemon/{id}`.
-
 *pokemon_api/index.js* - Osprey/Express app. Defines helper funcs/middleware; request handlers; etc. Responses have proper content-type, status codes, location header on POST; data is wrapped the way JSON API requires it;
-
 *pokemon_api/examples/* - Contains collection and item responses examples. These are used in a **Interacting with the server** section.
-
 *pokemon_api/libraries/jsonApiLibrary.raml* - Defines RAML Data Types required to satisfy JSON API requirements.
-
 *pokemon_api/libraries/jsonApiCollections.raml* - Defines resourceTypes and traits required to properly describe the JSON API RAML spec.
 
 ## Things changed in JSON API RAML lib
@@ -45,13 +40,7 @@ Note how it sets `Content-Type: application/vnd.api+json` in the response. We al
 http GET localhost:3000/v1/pokemon Content-Type:application/vnd.api+json
 
 HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 11
-Content-Type: application/vnd.api+json; charset=utf-8
-Date: Wed, 23 May 2018 09:36:16 GMT
-ETag: W/"b-EFAlOux7Kcr/ZEgGkn2r+oFAbu4"
-X-Powered-By: Express
-
+(...)
 {
     "data": []
 }
@@ -66,14 +55,7 @@ We also need to provide `Accept` header because JSON API requires so. If not pro
 http POST localhost:3000/v1/pokemon Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"1","attributes":{"name":"Bulbasaur","generation":1,"types":["Grass","Poison"],"species":"Seed Pokemon","abilities":["Overgrow","Chlorophyll"],"weightKg":7}}'
 
 HTTP/1.1 201 Created
-Connection: keep-alive
-Content-Length: 189
-Content-Type: application/vnd.api+json; charset=utf-8
-Date: Wed, 23 May 2018 09:41:42 GMT
-ETag: W/"bd-oO7lcAEqcTAkEr+8UqhbaKQofII"
-Location: https://localhost:3000/v1/pokemon/1
-X-Powered-By: Express
-
+(...)
 {
     "data": {
         "attributes": {
@@ -100,24 +82,20 @@ X-Powered-By: Express
 ### Create few more pokemon
 
 ```sh
-http POST localhost:3000/v1/pokemon Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"2","attributes":{"name":"Emolga","generation":5,"types":["Electric","Flying"],"species":"Sky Squirrel Pokemon","abilities":["Static","Motor Drive"],"weightKg":5}}'
+$ http POST localhost:3000/v1/pokemon Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"2","attributes":{"name":"Emolga","generation":5,"types":["Electric","Flying"],"species":"Sky Squirrel Pokemon","abilities":["Static","Motor Drive"],"weightKg":5}}'
+(...)
 
-http POST localhost:3000/v1/pokemon Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"3","attributes":{"name":"Minun","generation":3,"types":["Electric"],"species":"Cheering Pokemon","abilities":["Minus","Vold Absorb"],"weightKg":4}}'
+$ http POST localhost:3000/v1/pokemon Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"3","attributes":{"name":"Minun","generation":3,"types":["Electric"],"species":"Cheering Pokemon","abilities":["Minus","Vold Absorb"],"weightKg":4}}'
+(...)
 ```
 
 ### Get single pokemon
 
 ```sh
-http GET localhost:3000/v1/pokemon/1 Content-Type:application/vnd.api+json
+$ http GET localhost:3000/v1/pokemon/1 Content-Type:application/vnd.api+json
 
 HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 189
-Content-Type: application/vnd.api+json; charset=utf-8
-Date: Wed, 23 May 2018 09:46:01 GMT
-ETag: W/"bd-oO7lcAEqcTAkEr+8UqhbaKQofII"
-X-Powered-By: Express
-
+(...)
 {
     "data": {
         "attributes": {
@@ -144,12 +122,7 @@ X-Powered-By: Express
 
 ```sh
 http DELETE localhost:3000/v1/pokemon/2 Content-Type:application/vnd.api+json
-
-HTTP/1.1 204 No Content
-Connection: keep-alive
-Content-Type: application/vnd.api+json
-Date: Wed, 23 May 2018 09:46:43 GMT
-X-Powered-By: Express
+(...)
 ```
 
 ### Request not existing pokemon
@@ -158,13 +131,7 @@ X-Powered-By: Express
 http GET localhost:3000/v1/pokemon/2 Content-Type:application/vnd.api+json
 
 HTTP/1.1 404 Not Found
-Connection: keep-alive
-Content-Length: 97
-Content-Type: application/json; charset=utf-8
-Date: Wed, 23 May 2018 09:47:10 GMT
-ETag: W/"61-9EIp+dsL2/fAcH/KfZoA+1ay8kU"
-X-Powered-By: Express
-
+(...)
 {
     "errors": [
         {
@@ -182,13 +149,7 @@ X-Powered-By: Express
 http PATCH localhost:3000/v1/pokemon/3 Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"3","attributes":{"species":"Happy Pokemon","weightKg":7}}'
 
 HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 177
-Content-Type: application/vnd.api+json; charset=utf-8
-Date: Wed, 23 May 2018 09:48:22 GMT
-ETag: W/"b1-4pdr264COd6pWQapOUuVqRMgDfw"
-X-Powered-By: Express
-
+(...)
 {
     "data": {
         "attributes": {
