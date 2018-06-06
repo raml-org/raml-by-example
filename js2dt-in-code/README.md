@@ -1,19 +1,27 @@
-Download some example json, I'll use an example from json-schema.org
+---
+publication: 'RAML Playground'
+tags: ['RAML', 'Quick Start', 'JSON Schema']
+license: 'cc-40-by'
+---
+
+# `ramldt2jsonschema` Quick Start (JSON Schema > RAML)
+
+Download a JSON Schema, we'll use an example from [json-schema.org](http://json-schema.org):
 ```sh
 $ curl http://json-schema.org/example/calendar.json >calendar.json
 ```
 
-Download ramldt2jsonschema
+Download `ramldt2jsonschema` and `js-yaml` for manipulating YAML:
 ```sh
-$ npm install --save ramldt2jsonschema
+$ npm install --save ramldt2jsonschema js-yaml
 ```
 
-Write a small node app
+Write a small node app that outputs two RAML files out of that JSON Schema:
 ```javascript
 # File: index.js
 const r2j = require('ramldt2jsonschema')
 const fs = require('fs')
-const yaml = require('yaml')
+const yaml = require('js-yaml')
 
 const jsonData = fs.readFileSync('./calendar.json').toString()
 
