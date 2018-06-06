@@ -4,40 +4,34 @@ I think all necessary description can be taken from its repo README https://gith
 
 ## RAML features used in the example project
 
-* RAML spec with complex Markdown documentation, version, title, baseUriParameters, protocols, media type, secured;
-* Included documentation with snippets and structured Markdown;
-* Included resourceTypes, traits, securitySchemes;
-* Multiple nested endpoints using protocols, traits, resourceTypes;
 * Endpoints and methods are documented with description and displayName;
 * Endpoints methods requests and responses are documented with schemes defined as RAML Data Types;
-* resourceTypes using reserved parameter names like resourcePath and resourcePathName;
-* resourceTypes defining request/response bodies codes and schemes, headers, descriptions;
-* Well documented oath2 security scheme describing various possible responses;
-* Traits describing pagination, search and items images features;
-* RAML Data Types including descriptions, well documented properties, examples, inheritance;
+* resourceTypes defining response bodies codes and schemes, headers, descriptions;
+* RAML Data Types.
 
 ## Generating the html
 
-First you need to install `raml2html`:
+First download the RAML files we are going to use:
+
+```sh
+curl https://raw.githubusercontent.com/raml-org/raml-examples/master/others/mobile-order-api/api.raml > api.raml
+curl https://raw.githubusercontent.com/raml-org/raml-examples/master/others/mobile-order-api/assets.lib.raml > assets.lib.raml
+```
+
+Then you need to install `raml2html`:
 
 ```sh
 npm install -g raml2html
 ```
 
-Then you can pefrorm conversion with:
+Then you can perform conversion with:
 
 ```sh
-raml2html mobile-shoping-api/api.raml > api_spec.html
+raml2html api.raml > api_spec.html
 ```
+
+Now check out `api_spec.html` in your browser.
 
 ## Hosting the HTML
 
-When this article is merged and finished, just submit the HTML link to `rawgit.com` and copy the link that it generates.
-E.g. pasting [this link](https://github.com/postatum/raml-playground/blob/raml2html-outstanding-docs/raml2html-outstanding-docs/api_spec.html) produced [this link](https://rawgit.com/postatum/raml-playground/raml2html-outstanding-docs/raml2html-outstanding-docs/api_spec.html).
-
-Note the link type that should be passed to rawgit - it's a link to the file on github, not its raw version.
-
-## Notes
-
-* Had to manually add `displayName` to methods that use traits because for some reason `raml2html` titled them by the trait name. E.g. `GET /items` was titled as `Searchable`
-* Picked this example project as a base for article example project https://github.com/raml-org/raml-examples/tree/master/others/alainn-mobile-shopping . Renamed few things and changed urls. Wanted to make RAML about unicorns and magic, but then decided that Online Store example would be more relatable.
+Generated html is hosted via [this gist](https://gist.github.com/postatum/aa4a25f8a5c677024d8d86942cd79568) at [this rawgit dev url](https://rawgit.com/postatum/aa4a25f8a5c677024d8d86942cd79568/raw/d9b246551440477e0ba2f70482bc6c2f3203ae15/api_spec.html)
