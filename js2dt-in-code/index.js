@@ -1,6 +1,6 @@
 const r2j = require('ramldt2jsonschema')
 const fs = require('fs')
-const yaml = require('yaml')
+const yaml = require('js-yaml')
 
 const jsonData = fs.readFileSync('./calendar.json').toString()
 
