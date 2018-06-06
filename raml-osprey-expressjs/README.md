@@ -7,13 +7,6 @@
 *pokemon_api/libraries/jsonApiLibrary.raml* - Defines RAML Data Types required to satisfy JSON API requirements.
 *pokemon_api/libraries/jsonApiCollections.raml* - Defines resourceTypes and traits required to properly describe the JSON API RAML spec.
 
-## Things changed in JSON API RAML lib
-
-* Removed not used definitions (types, resourceTypes, traits) to make things simpler and avoid parsing errors;
-* Replaced `<<dataType>>_post` and `<<dataType>>_post` definitions with explicit params like `<<dataTypePost>>` because parser coudn't find types referenced the old way. I think the original type of definition just wasn't valid.
-* Had to split `success` type to `collectionSuccess` and `itemSuccess`. These represent collection/item response. Had to do it because `datatype-expansion` or something deeper doesn't process type unions (`foo | bar`) properly and validates schema against all types instead of "any".
-
-These changes have no effect on the result, I'm just letting you know.
 
 ## Results/notes of the project
 

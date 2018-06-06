@@ -1,11 +1,11 @@
-var express = require('express')
-var osprey = require('osprey')
-var bodyParser = require('body-parser')
-var join = require('path').join
+const express = require('express')
+const osprey = require('osprey')
+const bodyParser = require('body-parser')
+const join = require('path').join
 
-var PORT = process.env.PORT || 3000
-var router = osprey.Router()
-var pokemonDb = {}
+const PORT = process.env.PORT || 3000
+const router = osprey.Router()
+const pokemonDb = {}
 
 // Helpers
 
@@ -20,8 +20,8 @@ function wrapData (pok, id) {
 
 // Wraps multiple pokemon data in JSON API response compatible object
 function wrapDataObjs (poksObj) {
-  var poks = []
-  for (var id in poksObj) {
+  const poks = []
+  for (let id in poksObj) {
     poks.push(wrapData(poksObj[id], id))
   }
   return poks
@@ -52,13 +52,13 @@ function item404 (req, res, next) {
 // Handles GET, POST requests to /pokemon
 router.route('/pokemon')
   .get(setCtHeader, (req, res) => {
-    var data = {
+    const data = {
       data: wrapDataObjs(pokemonDb)
     }
     res.json(data)
   })
   .post(setCtHeader, (req, res) => {
-    var data = req.body.data
+    const data = req.body.data
     pokemonDb[data.id] = data.attributes
     res.set(
       'Location',
@@ -71,15 +71,15 @@ router.route('/pokemon')
 // Handles GET, PATCH, DELETE requests to /pokemon/{id}
 router.route('/pokemon/{id}', {id: {type: 'string'}})
   .get(item404, setCtHeader, (req, res) => {
-    var pok = pokemonDb[req.params.id]
+    const pok = pokemonDb[req.params.id]
     res.json({
       data: wrapData(pok, req.params.id)
     })
   })
   .patch(item404, setCtHeader, (req, res) => {
-    var pok = pokemonDb[req.params.id]
-    var pokChanges = req.body.data.attributes
-    for (var attr in pokChanges) {
+    const pok = pokemonDb[req.params.id]
+    const pokChanges = req.body.data.attributes
+    for (let attr in pokChanges) {
       pok[attr] = pokChanges[attr]
     }
     pokemonDb[req.params.id] = pok
@@ -96,7 +96,7 @@ router.route('/pokemon/{id}', {id: {type: 'string'}})
 // Loads RAML file, sets up request body parsing, starts server
 osprey.loadFile(join(__dirname, 'api.raml'))
   .then((middleware) => {
-    var app = express()
+    const app = express()
     app.use(bodyParser.json({
       type: 'application/vnd.api+json'
     }))
