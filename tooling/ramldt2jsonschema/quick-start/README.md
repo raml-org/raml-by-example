@@ -6,7 +6,9 @@ license: 'cc-40-by'
 
 # `ramldt2jsonschema` Quick Start (js2dt)
 
-Grab a JSON Schema, we'll use one from [json-schema.org](http://json-schema.org):
+ramldt2jsonschema is both a CLI tool and a Library that can convert a RAML DataType to a JSON Schema, and vice-versa.
+
+Let's start with a JSON Schema, we'll use one from [json-schema.org](http://json-schema.org):
 ```sh
 $ curl http://json-schema.org/example/calendar.json >calendar.json
 ```
@@ -24,6 +26,7 @@ and using the CLI can produce a similar output:
 ```sh
 $ npm install -g ramldt2jsonschema
 (...)
+
 $ js2dt calendar.json >calendar_datatype.raml
 
 ```
