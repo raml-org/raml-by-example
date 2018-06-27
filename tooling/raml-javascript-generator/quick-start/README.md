@@ -20,7 +20,7 @@ $ npm install raml-javascript-generator -g
 Download example RAML:
 
 ```sh
-$ wget -O api.raml https://raw.githubusercontent.com/raml-org/raml-examples/master/helloworld/helloworld.raml
+$ curl -o api.raml https://raw.githubusercontent.com/raml-org/raml-examples/master/helloworld/helloworld.raml
 ```
 
 Generate JavaScript client:
