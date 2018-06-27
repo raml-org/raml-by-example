@@ -1,6 +1,6 @@
 ---
 publication: 'RAML Playground'
-tags: ['RAML', 'tutorial']
+tags: ['RAML', 'Quick Start']
 license: 'cc-40-by'
 ---
 
