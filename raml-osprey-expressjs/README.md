@@ -20,9 +20,9 @@
 ### Starting the server
 
 ```sh
-cd pokemon_api
-npm install .
-node index.js
+$ cd pokemon_api
+$ npm install .
+$ node index.js
 ```
 
 ### List pokemon
@@ -30,7 +30,7 @@ node index.js
 Note how it sets `Content-Type: application/vnd.api+json` in the response. We also need to provide that header in all requests because JSON API requires so.
 
 ```sh
-http GET localhost:3000/v1/pokemon Content-Type:application/vnd.api+json
+$ http GET localhost:3000/v1/pokemon Content-Type:application/vnd.api+json
 
 HTTP/1.1 200 OK
 (...)
@@ -45,7 +45,7 @@ Note how `Location` is set in response.
 We also need to provide `Accept` header because JSON API requires so. If not provided, Osprey will throw a validation error saying that not supported `Accept` content type is requested.
 
 ```sh
-http POST localhost:3000/v1/pokemon Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"1","attributes":{"name":"Bulbasaur","generation":1,"types":["Grass","Poison"],"species":"Seed Pokemon","abilities":["Overgrow","Chlorophyll"],"weightKg":7}}'
+$ http POST localhost:3000/v1/pokemon Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"1","attributes":{"name":"Bulbasaur","generation":1,"types":["Grass","Poison"],"species":"Seed Pokemon","abilities":["Overgrow","Chlorophyll"],"weightKg":7}}'
 
 HTTP/1.1 201 Created
 (...)
@@ -114,14 +114,14 @@ HTTP/1.1 200 OK
 ### Delete single pokemon
 
 ```sh
-http DELETE localhost:3000/v1/pokemon/2 Content-Type:application/vnd.api+json
+$ http DELETE localhost:3000/v1/pokemon/2 Content-Type:application/vnd.api+json
 (...)
 ```
 
 ### Request not existing pokemon
 
 ```sh
-http GET localhost:3000/v1/pokemon/2 Content-Type:application/vnd.api+json
+$ http GET localhost:3000/v1/pokemon/2 Content-Type:application/vnd.api+json
 
 HTTP/1.1 404 Not Found
 (...)
@@ -139,7 +139,7 @@ HTTP/1.1 404 Not Found
 ### Edit pokemon
 
 ```sh
-http PATCH localhost:3000/v1/pokemon/3 Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"3","attributes":{"species":"Happy Pokemon","weightKg":7}}'
+$ http PATCH localhost:3000/v1/pokemon/3 Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"3","attributes":{"species":"Happy Pokemon","weightKg":7}}'
 
 HTTP/1.1 200 OK
 (...)

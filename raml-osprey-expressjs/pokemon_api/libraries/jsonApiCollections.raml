@@ -7,7 +7,6 @@ resourceTypes:
       This resourceType should be used for any collection of items.
       Parameters:
         dataType: the type name of the primary data
-        dataTypePost: the type name of the primary data used in POST requests
         exampleCollection: an example of the response for a GET of the collection.
         exampleItem: an example of the body/response for a POST to the collection.
     description: The collection of <<resourcePathName>>
@@ -38,7 +37,7 @@ resourceTypes:
         application/vnd.api+json:
           type: object # ??
           properties:
-            data: <<dataTypePost>>
+            data: <<dataType>>
           additionalProperties: false
       responses:
         201:
@@ -87,7 +86,6 @@ resourceTypes:
       This resourceType should be used for any single items
       Parameters:
         dataType: the type name of the primary data (must subclass api.response)
-        dataTypePatch: the type name of the primary data used in PATCH requests
         relType: the type name of the relationships
         exampleItem: an example of the api.success response
     description: The <<resourcePathName>> item
@@ -117,7 +115,7 @@ resourceTypes:
         application/vnd.api+json:
           type: object # ??
           properties:
-            data: <<dataTypePatch>>
+            data: <<dataType>>
           additionalProperties: false
       responses:
         200:
