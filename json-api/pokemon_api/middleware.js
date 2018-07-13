@@ -28,9 +28,7 @@ function item404 (pokemonDb, req, res, next) {
 function rejectCtMediaTypeParams (req, res, next) {
   const ct = req.headers['content-type']
   if (ct.indexOf('application/vnd.api+json') >= 0) {
-    let params = ct.split(';')[1] || ''
-    params = params.replace(' ', '')
-    if (params.length > 0) {
+    if (helpers.containsParam(ct)) {
       res.status(415)
       helpers.resJSON(res, {
         errors: [{

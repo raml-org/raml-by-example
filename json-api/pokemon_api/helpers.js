@@ -24,8 +24,14 @@ function resJSON (res, obj) {
   res.send(Buffer.from(JSON.stringify(obj)))
 }
 
+// Return true if header contains parameter
+function containsParam (header) {
+  return header.indexOf(';') >= 0 && header.indexOf('=') >= 0
+}
+
 module.exports ={
   wrapData: wrapData,
   wrapDataObjs: wrapDataObjs,
-  resJSON: resJSON
+  resJSON: resJSON,
+  containsParam: containsParam
 }
