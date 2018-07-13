@@ -24,7 +24,9 @@
   },
   "files": [
     "api.raml",
-    "index.js"
+    "index.js",
+    "helpers.js",
+    "middleware.js"
   ],
   "scripts": {}
 }

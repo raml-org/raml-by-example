@@ -2,97 +2,31 @@ const express = require('express')
 const osprey = require('osprey')
 const bodyParser = require('body-parser')
 const join = require('path').join
+const helpers = require('./helpers')
+const mware = require('./middleware')
 
 const PORT = process.env.PORT || 3000
 const router = osprey.Router()
 const pokemonDb = {}
 
-// Helpers
-
-// Wraps pokemon data in JSON API response compatible object
-function wrapData (pok, id) {
-  return {
-    type: 'Pokemon',
-    'id': id,
-    attributes: pok
-  }
-}
-
-// Wraps multiple pokemon data in JSON API response compatible object
-function wrapDataObjs (poksObj) {
-  const poks = []
-  for (let id in poksObj) {
-    poks.push(wrapData(poksObj[id], id))
-  }
-  return poks
-}
-
-// Wraps response in JSON using raw Express funcs to avoid
-// `charset=utf-8` media param being added to Content-Type header
-function resJSON (res, obj) {
-  res.send(Buffer.from(JSON.stringify(obj)))
-}
-
-// Middleware
-
-// Middleware to set proper Content-Type header
-function setResponseCtHeader (req, res, next) {
-  res.set('Content-Type', 'application/vnd.api+json')
-  next()
-}
-
-// Middleware that returns proper 404 if item is not found
-function item404 (req, res, next) {
-  if (pokemonDb[req.params.id] === undefined) {
-    res.status(404)
-    resJSON(res, {
-      errors: [{
-        status: '404',
-        title: 'Resource not found',
-        detail: `Pokemon with id ${req.params.id} not found`
-      }]
-    })
-    return
-  }
-  next()
-}
-
-// Reject requests with media type params
-function rejectMediaTypeParams (req, res, next) {
-  const ct = req.headers['content-type']
-  if (ct.indexOf('application/vnd.api+json') >= 0) {
-    let params = ct.split(';')[1] || ''
-    params = params.replace(' ', '')
-    if (params.length > 0) {
-      res.status(415)
-      resJSON(res, {
-        errors: [{
-          status: '415',
-          title: 'Unsupported Media Type',
-          detail: 'Media type parameters are not allowed in Content-Type header'
-        }]
-      })
-      return
-    }
-  }
-  next()
-}
 
 // Apply middleware
-router.use(setResponseCtHeader)
-router.use(rejectMediaTypeParams)
-router.use('/pokemon/{id}', item404)
+router.use(mware.setResponseCtHeader)
+router.use(mware.rejectCtMediaTypeParams)
+router.use('/pokemon/{id}', (req, res, next) => {
+  mware.item404(pokemonDb, req, res, next)
+})
 
 
-// Requests processors
+// Request handlers
 
 // Handles GET, POST requests to /pokemon
 router.route('/pokemon')
   .get((req, res) => {
     const data = {
-      data: wrapDataObjs(pokemonDb)
+      data: helpers.wrapDataObjs(pokemonDb)
     }
-    resJSON(res, data)
+    helpers.resJSON(res, data)
   })
   .post((req, res) => {
     const data = req.body.data
@@ -101,8 +35,8 @@ router.route('/pokemon')
       'Location',
       `http://localhost:3000/v1/pokemon/${data.id}`)
     res.status(201)
-    resJSON(res, {
-      data: wrapData(data.attributes, data.id)
+    helpers.resJSON(res, {
+      data: helpers.wrapData(data.attributes, data.id)
     })
   })
 
@@ -110,8 +44,8 @@ router.route('/pokemon')
 router.route('/pokemon/{id}', {id: {type: 'string'}})
   .get((req, res) => {
     const pok = pokemonDb[req.params.id]
-    resJSON(res, {
-      data: wrapData(pok, req.params.id)
+    helpers.resJSON(res, {
+      data: helpers.wrapData(pok, req.params.id)
     })
   })
   .patch((req, res) => {
@@ -121,8 +55,8 @@ router.route('/pokemon/{id}', {id: {type: 'string'}})
       pok[attr] = pokChanges[attr]
     }
     pokemonDb[req.params.id] = pok
-    resJSON(res, {
-      data: wrapData(pok, req.params.id)
+    helpers.resJSON(res, {
+      data: helpers.wrapData(pok, req.params.id)
     })
     res.status(204).end()
   })
