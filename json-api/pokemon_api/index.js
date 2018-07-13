@@ -73,6 +73,7 @@ osprey.loadFile(join(__dirname, 'api.raml'))
       type: 'application/vnd.api+json'
     }))
     app.use('/v1', middleware, router)
+    app.use(mware.wrapErrors)
     app.listen(PORT, () => {
       console.log(`Application listening on ${PORT}...`)
     })
