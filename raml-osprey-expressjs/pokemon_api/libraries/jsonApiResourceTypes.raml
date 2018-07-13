@@ -1,6 +1,7 @@
 #%RAML 1.0 Library
 uses:
-  api: jsonApiLibrary.raml
+  types: jsonApiTypes.raml
+
 resourceTypes:
   collection:
     usage: |
@@ -17,7 +18,7 @@ resourceTypes:
           description: Success. Response contains the primary data and optional metadata.
           body:
             application/vnd.api+json:
-              type: api.collectionSuccess
+              type: types.collectionSuccess
               properties:
                 data: <<dataType>>[]
               example: <<exampleCollection>>
@@ -25,7 +26,7 @@ resourceTypes:
           description: Not found. Response contains a list of error(s).
           body:
             application/vnd.api+json:
-              type: api.failure
+              type: types.failure
               example:
                 errors:
                   - status: "404"
@@ -35,7 +36,7 @@ resourceTypes:
       description: Create a new <<resourcePathName|!singularize>>.
       body:
         application/vnd.api+json:
-          type: object # ??
+          type: object
           properties:
             data: <<dataType>>
           additionalProperties: false
@@ -44,10 +45,10 @@ resourceTypes:
           description: Created. Response contains the created <<resourcePathName|!singularize>>
             Location header *may* contain the URI.
           headers:
-            location?: api.uristring
+            location?: types.uristring
           body:
             application/vnd.api+json:
-              type: api.itemSuccess
+              type: types.itemSuccess
               properties:
                 data: <<dataType>>
               example: <<exampleItem>>
@@ -59,12 +60,12 @@ resourceTypes:
           description: Forbidden
           body:
             application/vnd.api+json:
-              type: api.failure
+              type: types.failure
         404:
           description: Related resource not found
           body:
             application/vnd.api+json:
-              type: api.failure
+              type: types.failure
               example:
                 errors:
                   - status: "404"
@@ -76,7 +77,7 @@ resourceTypes:
             Or, the update would violate other server-enforced constraints including type and id mismatch.
           body:
             application/vnd.api+json:
-              type: api.failure
+              type: types.failure
               example:
                 errors:
                   - status: "409"
@@ -85,9 +86,9 @@ resourceTypes:
     usage: |
       This resourceType should be used for any single items
       Parameters:
-        dataType: the type name of the primary data (must subclass api.response)
+        dataType: the type name of the primary data (must subclass types.response)
         relType: the type name of the relationships
-        exampleItem: an example of the api.success response
+        exampleItem: an example of the types.success response
     description: The <<resourcePathName>> item
     get:
       responses:
@@ -95,7 +96,7 @@ resourceTypes:
           description: Success. Response contains the primary data and optional metadata.
           body:
             application/vnd.api+json:
-              type: api.itemSuccess
+              type: types.itemSuccess
               properties:
                 data: <<dataType>>
               example:
@@ -103,7 +104,7 @@ resourceTypes:
         404:
           body:
             application/vnd.api+json:
-              type: api.failure
+              type: types.failure
               example:
                 errors:
                   - status: "404"
@@ -113,7 +114,7 @@ resourceTypes:
       description: Update an existing <<resourcePath|!singularize>>.
       body:
         application/vnd.api+json:
-          type: object # ??
+          type: object
           properties:
             data: <<dataType>>
           additionalProperties: false
@@ -124,7 +125,7 @@ resourceTypes:
             The response contains the result of those updates.
           body:
             application/vnd.api+json:
-              type: api.itemSuccess
+              type: types.itemSuccess
               properties:
                 data: <<dataType>>
               example: <<exampleItem>>
@@ -136,12 +137,12 @@ resourceTypes:
           description: Forbidden
           body:
             application/vnd.api+json:
-              type: api.failure
+              type: types.failure
         404:
           description: Not Found
           body:
             application/vnd.api+json:
-              type: api.failure
+              type: types.failure
               example:
                 errors:
                   - status: "404"
@@ -153,7 +154,7 @@ resourceTypes:
             Or, the resource object’s type and id do not match the server’s endpoint.
           body:
             application/vnd.api+json:
-              type: api.failure
+              type: types.failure
               example:
                 errors:
                   - status: "409"
@@ -165,7 +166,7 @@ resourceTypes:
           description: Sucessfully deleted. Top-level meta-data response provided.
           body:
             application/vnd.api+json:
-              type: api.info
+              type: types.info
         202:
           description: Accepted for processing. Request has not yet completed.
           # does this one return metadata?
@@ -175,22 +176,9 @@ resourceTypes:
           description: Not found.
           body:
             application/vnd.api+json:
-              type: api.failure
+              type: types.failure
               example:
                 errors:
                   - status: "404"
                     title: Resource not found
                     detail: <<resourcePath>> not found
-
-traits:
-  sortable:
-    description: |
-      Collection response is [sorted](http://jsonapi.org/format/#fetching-sorting) in ascending or descending(-) order.
-    queryParameters:
-      sort:
-        description: |
-          list of type.attributes to sort by. Use a `-` sign to indicate a descending sort.
-        type: string
-        required: false
-        example: |
-          sort=Location.warehouse,-Widget.qty

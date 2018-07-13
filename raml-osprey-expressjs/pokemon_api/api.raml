@@ -2,18 +2,19 @@
 title: Pokemon API
 description: Pokemon information API
 version: v1
-baseUri: https://localhost:3000/{version}
+baseUri: http://localhost:3000/{version}
 mediaType: application/vnd.api+json
 
 uses:
-  api: libraries/jsonApiLibrary.raml
-  col: libraries/jsonApiCollections.raml
+  jaTypes: libraries/jsonApiTypes.raml
+  jaResourceTypes: libraries/jsonApiResourceTypes.raml
+  jaTraits: libraries/jsonApiTraits.raml
 
 types:
   PokemonAttrs:
     displayName: PokemonAttrs
     description: Pokemon attributes without any meta, type, id, etc.
-    type: api.attributes
+    type: jaTypes.attributes
     properties:
       name: string
       generation: number
@@ -22,7 +23,7 @@ types:
       abilities: string[]
       weightKg: number
   Pokemon:
-    type: api.resource
+    type: jaTypes.resource
     description: Pokemon type
     properties:
       attributes:
@@ -30,15 +31,15 @@ types:
 
 /pokemon:
   type:
-    col.collection:
+    jaResourceTypes.collection:
       dataType: Pokemon
       exampleCollection: !include examples/PokemonCollectionExample.json
       exampleItem: !include examples/PokemonItemExample.json
   get:
-    is: [ col.sortable ]
+    is: [ jaTraits.sortable ]
 
   /{id}:
     type:
-      col.item:
+      jaResourceTypes.item:
         dataType: Pokemon
         exampleItem: !include examples/PokemonItemExample.json
