@@ -13,7 +13,6 @@ const pokemonDb = {}
 // Apply middleware
 router.use(mware.setResponseCtHeader)
 router.use(mware.rejectCtWithParams)
-router.use(mware.rejectAcceptWithParams)
 router.use('/pokemon/{id}', (req, res, next) => {
   mware.item404(pokemonDb, req, res, next)
 })

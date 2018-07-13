@@ -43,39 +43,8 @@ function rejectCtWithParams (req, res, next) {
   next()
 }
 
-// Reject requests with media type params in 'Accept'
-function rejectAcceptWithParams (req, res, next) {
-  let valid
-  const accepts = req.headers.accept.split(',')
-  for (let hdr of accepts) {
-    if (hdr.indexOf('application/vnd.api+json') >= 0) {
-      if (!helpers.containsParams(hdr)) {
-        valid = true
-        break
-      }
-      valid = false
-    }
-  }
-
-  if (valid || valid === undefined) {
-    next()
-  } else {
-    res.status(406)
-    helpers.resJSON(res, {
-      errors: [{
-        status: '406',
-        title: 'Not Acceptable',
-        detail: '"Accept" header contains the JSON API media type and all ' +
-                'instances of that media type are modified with media ' +
-                'type parameters'
-      }]
-    })
-  }
-}
-
 module.exports = {
   setResponseCtHeader: setResponseCtHeader,
   item404: item404,
-  rejectCtWithParams: rejectCtWithParams,
-  rejectAcceptWithParams: rejectAcceptWithParams
+  rejectCtWithParams: rejectCtWithParams
 }
