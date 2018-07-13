@@ -27,8 +27,16 @@ function wrapDataObjs (poksObj) {
   return poks
 }
 
+// Wraps response in JSON using raw Express funcs to avoid
+// `charset=utf-8` media param being added to Content-Type header
+function resJSON (res, obj) {
+  res.send(Buffer.from(JSON.stringify(obj)))
+}
+
+// Middleware
+
 // Middleware to set proper Content-Type header
-function setCtHeader (req, res, next) {
+function setResponseCtHeader (req, res, next) {
   res.set('Content-Type', 'application/vnd.api+json')
   next()
 }
@@ -36,7 +44,8 @@ function setCtHeader (req, res, next) {
 // Middleware that returns proper 404 if item is not found
 function item404 (req, res, next) {
   if (pokemonDb[req.params.id] === undefined) {
-    res.status(404).json({
+    res.status(404)
+    resJSON(res, {
       errors: [{
         status: '404',
         title: 'Resource not found',
@@ -47,48 +56,54 @@ function item404 (req, res, next) {
   next()
 }
 
+// Apply middleware
+router.use(setResponseCtHeader)
+router.use('/pokemon/{id}', item404)
+
+
 // Requests processors
 
 // Handles GET, POST requests to /pokemon
 router.route('/pokemon')
-  .get(setCtHeader, (req, res) => {
+  .get((req, res) => {
     const data = {
       data: wrapDataObjs(pokemonDb)
     }
-    res.json(data)
+    resJSON(res, data)
   })
-  .post(setCtHeader, (req, res) => {
+  .post((req, res) => {
     const data = req.body.data
     pokemonDb[data.id] = data.attributes
     res.set(
       'Location',
       `http://localhost:3000/v1/pokemon/${data.id}`)
-    res.status(201).json({
+    res.status(201)
+    resJSON(res, {
       data: wrapData(data.attributes, data.id)
     })
   })
 
 // Handles GET, PATCH, DELETE requests to /pokemon/{id}
 router.route('/pokemon/{id}', {id: {type: 'string'}})
-  .get(item404, setCtHeader, (req, res) => {
+  .get((req, res) => {
     const pok = pokemonDb[req.params.id]
-    res.json({
+    resJSON(res, {
       data: wrapData(pok, req.params.id)
     })
   })
-  .patch(item404, setCtHeader, (req, res) => {
+  .patch((req, res) => {
     const pok = pokemonDb[req.params.id]
     const pokChanges = req.body.data.attributes
     for (let attr in pokChanges) {
       pok[attr] = pokChanges[attr]
     }
     pokemonDb[req.params.id] = pok
-    res.json({
+    resJSON(res, {
       data: wrapData(pok, req.params.id)
     })
     res.status(204).end()
   })
-  .delete(item404, setCtHeader, (req, res) => {
+  .delete((req, res) => {
     delete pokemonDb[req.params.id]
     res.status(204).end()
   })

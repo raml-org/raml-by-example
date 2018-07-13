@@ -9,13 +9,13 @@ license: 'cc-40-by'
 JSON API is a specification that describes a set of conventions for building APIs in JSON. The [JSON API specs](http://jsonapi.org/format/) introduces it as follow:
 
 > JSON API is a specification for how a client should request that resources be fetched or modified, and how a server should respond to those requests.
-> 
+>
 > JSON API is designed to minimize both the number of requests and the amount of data transmitted between clients and servers. This efficiency is achieved without compromising readability, flexibility, or discoverability.
 
-Furthermore, the [front page](http://jsonapi.org) helps put things into perspective: 
+Furthermore, the [front page](http://jsonapi.org) helps put things into perspective:
 
 > If you’ve ever argued with your team about the way your JSON responses should be formatted, JSON API can be your anti-bikeshedding tool.
-> 
+>
 > By following shared conventions, you can increase productivity, take advantage of generalized tooling, and focus on what matters: your application.
 
 
@@ -23,7 +23,7 @@ Furthermore, the [front page](http://jsonapi.org) helps put things into perspect
 
 We're going to design an API in RAML that follows the JSON API conventions. We will design this API in such a way that all its JSON API -specific patterns will be placed inside reusable RAML fragments. Those fragments may be reused later-on to design more JSON APIs.
 
-After designing this API, we'll be implementing it with NodeJS, Express web framework and [Osprey](https://github.com/mulesoft/osprey) for payload validation. 
+After designing this API, we'll be implementing it with NodeJS, Express web framework and [Osprey](https://github.com/mulesoft/osprey) for payload validation.
 
 
 ## Project elements
@@ -69,7 +69,7 @@ HTTP/1.1 200 OK
 
 ### 201 Created
 
-The newly create object is returned, in JSON API format, and a `Location` response header is included as per the spec:
+The newly created object is returned, in JSON API format, and a `Location` response header is included as per the spec:
 
 > The response SHOULD include a Location header identifying the location of the newly created resource.
 
@@ -172,7 +172,7 @@ HTTP/1.1 404 Not Found
 ### Updating objects
 
 > Any or all of a resource’s attributes MAY be included in the resource object included in a PATCH request.
-> 
+>
 > If a request does not include all of the attributes for a resource, the server MUST interpret the missing attributes as if they were included with their current values. The server MUST NOT interpret missing attributes as null values.
 
 ```sh
