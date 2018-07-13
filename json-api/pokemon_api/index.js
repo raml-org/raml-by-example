@@ -52,12 +52,35 @@ function item404 (req, res, next) {
         detail: `Pokemon with id ${req.params.id} not found`
       }]
     })
+    return
+  }
+  next()
+}
+
+// Reject requests with media type params
+function rejectMediaTypeParams (req, res, next) {
+  const ct = req.headers['content-type']
+  if (ct.indexOf('application/vnd.api+json') >= 0) {
+    let params = ct.split(';')[1] || ''
+    params = params.replace(' ', '')
+    if (params.length > 0) {
+      res.status(415)
+      resJSON(res, {
+        errors: [{
+          status: '415',
+          title: 'Unsupported Media Type',
+          detail: 'Media type parameters are not allowed in Content-Type header'
+        }]
+      })
+      return
+    }
   }
   next()
 }
 
 // Apply middleware
 router.use(setResponseCtHeader)
+router.use(rejectMediaTypeParams)
 router.use('/pokemon/{id}', item404)
 
 
