@@ -25,7 +25,7 @@ function resJSON (res, obj) {
 }
 
 // Return true if header contains parameter
-function containsParam (header) {
+function containsParams (header) {
   return header.indexOf(';') >= 0 && header.indexOf('=') >= 0
 }
 
@@ -33,5 +33,5 @@ module.exports ={
   wrapData: wrapData,
   wrapDataObjs: wrapDataObjs,
   resJSON: resJSON,
-  containsParam: containsParam
+  containsParams: containsParams
 }
