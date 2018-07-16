@@ -66,7 +66,7 @@ router.route('/pokemon/{id}', {id: {type: 'string'}})
   })
 
 // Loads RAML file, sets up request body parsing, starts server
-osprey.loadFile(join(__dirname, 'api.raml'))
+osprey.loadFile(join(__dirname, 'api.raml'), {errorHandler: mware.errorResponder})
   .then((middleware) => {
     const app = express()
     app.use(bodyParser.json({

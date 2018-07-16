@@ -43,7 +43,7 @@ function rejectCtWithParams (req, res, next) {
   next()
 }
 
-// Wrap all Express errors in JSON API format
+// Wraps Express errors in JSON API format
 function wrapErrors (err, req, res, next) {
   setResponseCtHeader(req, res, () => {})
   const status = err.status ? err.status : 500
@@ -57,9 +57,29 @@ function wrapErrors (err, req, res, next) {
   })
 }
 
+// Wraps Osprey validation errors in JSON API format
+function errorResponder (req, res, errors, stack) {
+  setResponseCtHeader(req, res, () => {})
+  let outErrs = []
+  errors.forEach((err) => {
+    outErrs.push({
+      id: err.id,
+      source: {
+        pointer: err.dataPath
+      },
+      detail: err.detail,
+      meta: err.meta,
+      title: err.message,
+      code: err.type + '/' + err.keyword + '/' + err.schema,
+    })
+  })
+  helpers.resJSON(res, {errors: outErrs})
+}
+
 module.exports = {
   setResponseCtHeader: setResponseCtHeader,
   item404: item404,
   rejectCtWithParams: rejectCtWithParams,
-  wrapErrors: wrapErrors
+  wrapErrors: wrapErrors,
+  errorResponder: errorResponder
 }
