@@ -26,7 +26,7 @@ function item404 (pokemonDb, req, res, next) {
 
 // Reject requests with media type params in 'Content-Type'
 function rejectCtWithParams (req, res, next) {
-  const hdr = req.headers['content-type']
+  const hdr = req.headers['content-type'] || []
   if (hdr.indexOf('application/vnd.api+json') >= 0) {
     if (helpers.containsParams(hdr)) {
       res.status(415)
