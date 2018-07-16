@@ -46,10 +46,11 @@ function rejectCtWithParams (req, res, next) {
 // Wrap all Express errors in JSON API format
 function wrapErrors (err, req, res, next) {
   setResponseCtHeader(req, res, () => {})
-  res.status(err.status)
+  const status = err.status ? err.status : 500
+  res.status(status)
   helpers.resJSON(res, {
     errors: [{
-      status: err.status.toString(),
+      status: status.toString(),
       code: err.name,
       detail: err.message
     }]
