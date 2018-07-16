@@ -24,16 +24,15 @@ router.use('/pokemon/{id}', (req, res, next) => {
 router.route('/pokemon')
   .get((req, res) => {
     const data = {
-      data: helpers.wrapDataObjs(pokemonDb)
+      data: helpers.wrapDataObjs(pokemonDb),
+      links: {self: helpers.makePokemonURL()}
     }
     helpers.resJSON(res, data)
   })
   .post((req, res) => {
     const data = req.body.data
     pokemonDb[data.id] = data.attributes
-    res.set(
-      'Location',
-      `http://localhost:3000/v1/pokemon/${data.id}`)
+    res.set('Location', helpers.makePokemonURL(data.id))
     res.status(201)
     helpers.resJSON(res, {
       data: helpers.wrapData(data.attributes, data.id)

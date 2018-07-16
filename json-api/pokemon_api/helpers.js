@@ -5,7 +5,10 @@ function wrapData (pok, id) {
   return {
     type: 'Pokemon',
     'id': id,
-    attributes: pok
+    attributes: pok,
+    links: {
+      self: makePokemonURL(id)
+    }
   }
 }
 
@@ -29,9 +32,18 @@ function containsParams (header) {
   return header.indexOf(';') >= 0 && header.indexOf('=') >= 0
 }
 
+function makePokemonURL (id) {
+  let url = 'http://localhost:3000/v1/pokemon'
+  if (id !== undefined) {
+    url += `/${id}`
+  }
+  return url
+}
+
 module.exports ={
   wrapData: wrapData,
   wrapDataObjs: wrapDataObjs,
   resJSON: resJSON,
-  containsParams: containsParams
+  containsParams: containsParams,
+  makePokemonURL: makePokemonURL
 }
