@@ -10,6 +10,9 @@
         "species": "Sky Squirrel Pokemon",
         "abilities": ["Static", "Motor Drive"],
         "weightKg": 5
+      },
+      "links": {
+        "self": "http://localhost:3000/v1/pokemon/2"
       }
     }, {
       "type": "Pokemon",
@@ -21,7 +24,13 @@
         "species": "Cheering Pokemon",
         "abilities": ["Minus", "Vold Absorb"],
         "weightKg": 4
+      },
+      "links": {
+        "self": "http://localhost:3000/v1/pokemon/3"
       }
     }
-  ]
+  ],
+  "links": {
+    "self": "http://localhost:3000/v1/pokemon"
+  }
 }

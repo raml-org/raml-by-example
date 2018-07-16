@@ -2,6 +2,9 @@
   "data": {
     "type": "Pokemon",
     "id": "1",
+    "links": {
+      "self": "http://localhost:3000/v1/pokemon/1"
+    },
     "attributes": {
       "name": "Bulbasaur",
       "generation": 1,
