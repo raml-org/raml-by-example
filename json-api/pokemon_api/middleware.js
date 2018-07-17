@@ -76,20 +76,22 @@ function errorResponder (req, res, errors, stack) {
   helpers.resJSON(res, {errors: outErrs})
 }
 
-// Reject requests with request param "include"
-function rejectIncludeParam (req, res, next) {
-  if (req.originalUrl.indexOf('include=') >= 0) {
-    res.status(400)
-    helpers.resJSON(res, {
-      errors: [{
-        status: '400',
-        title: 'Bad Request',
-        detail: 'An endpoint does not support the `include` parameter'
-      }]
-    })
-    return
+// Reject request containing particular request parameter
+function rejectRequestParam (param) {
+  return (req, res, next) => {
+    if (req.originalUrl.indexOf(`${param}=`) >= 0) {
+      res.status(400)
+      helpers.resJSON(res, {
+        errors: [{
+          status: '400',
+          title: 'Bad Request',
+          detail: `An endpoint does not support the '${param}' parameter`
+        }]
+      })
+      return
+    }
+    next()
   }
-  next()
 }
 
 module.exports = {
@@ -98,5 +100,5 @@ module.exports = {
   rejectCtWithParams: rejectCtWithParams,
   wrapErrors: wrapErrors,
   errorResponder: errorResponder,
-  rejectIncludeParam: rejectIncludeParam
+  rejectRequestParam: rejectRequestParam
 }
