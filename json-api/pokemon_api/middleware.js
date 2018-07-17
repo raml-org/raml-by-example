@@ -94,11 +94,51 @@ function rejectRequestParam (param) {
   }
 }
 
+// Reject creation of item duplicates
+function rejectDuplicateCreation (pokemonDb, req, res, next) {
+  if (req.method !== 'POST') { return next() }
+  const id = req.body.data.id
+  if (pokemonDb[id] !== undefined) {
+    res.status(409)
+    helpers.resJSON(res, {
+      errors: [{
+        status: '409',
+        title: 'Conflict',
+        detail: `Pokemon with id ${id} already exists`
+      }]
+    })
+    return
+  }
+  next()
+}
+
+// Reject creation of item with incorrect type
+function rejectNotSupportedType (typeName) {
+  return (req, res, next) => {
+    if (req.method !== 'POST') { return next() }
+    const type = req.body.data.type
+    if (type !== typeName) {
+      res.status(409)
+      helpers.resJSON(res, {
+        errors: [{
+          status: '409',
+          title: 'Conflict',
+          detail: `Type '${type}' is not represented by this endpoint`
+        }]
+      })
+      return
+    }
+    next()
+  }
+}
+
 module.exports = {
   setResponseCtHeader: setResponseCtHeader,
   item404: item404,
   rejectCtWithParams: rejectCtWithParams,
   wrapErrors: wrapErrors,
   errorResponder: errorResponder,
-  rejectRequestParam: rejectRequestParam
+  rejectRequestParam: rejectRequestParam,
+  rejectDuplicateCreation: rejectDuplicateCreation,
+  rejectNotSupportedType: rejectNotSupportedType
 }
