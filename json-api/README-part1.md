@@ -69,6 +69,7 @@ mediaType: application/vnd.api+json
 How it translates in our API Spec:
 ```raml
 (...)
+types:
   success:
     description: A succesful (2xx) response body.
     type: object
@@ -92,4 +93,5 @@ How it translates in our API Spec:
       meta?: object
       jsonapi?: object
       links?: object
+
 ```
