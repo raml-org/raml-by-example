@@ -46,11 +46,11 @@ The newly created object is returned, in JSON API format, and a `Location` respo
 > The response SHOULD include a Location header identifying the location of the newly created resource.
 
 ```sh
-$ http POST localhost:3000/v1/pokemon Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"1","attributes":{"name":"Bulbasaur","generation":1,"types":["Grass","Poison"],"species":"Seed Pokemon","abilities":["Overgrow","Chlorophyll"],"weightKg":7}}'
+$ http POST localhost:3000/v1/pokemon Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"8618284c-89a1-11e8-9a94-a6cf71072f73","attributes":{"name":"Bulbasaur","generation":1,"types":["Grass","Poison"],"species":"Seed Pokemon","abilities":["Overgrow","Chlorophyll"],"weightKg":7}}'
 
 HTTP/1.1 201 Created
 (...)
-Location: http://localhost:3000/v1/pokemon/1
+Location: http://localhost:3000/v1/pokemon/8618284c-89a1-11e8-9a94-a6cf71072f73
 
 {
     "data": {
@@ -68,9 +68,9 @@ Location: http://localhost:3000/v1/pokemon/1
             ],
             "weightKg": 7
         },
-        "id": "1",
+        "id": "8618284c-89a1-11e8-9a94-a6cf71072f73",
         "links": {
-            "self": "http://localhost:3000/v1/pokemon"
+            "self": "http://localhost:3000/v1/pokemon/8618284c-89a1-11e8-9a94-a6cf71072f73"
         },
         "type": "Pokemon"
     }
@@ -81,17 +81,17 @@ Location: http://localhost:3000/v1/pokemon/1
 Let's create a few more objects:
 
 ```sh
-$ http POST localhost:3000/v1/pokemon Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"2","attributes":{"name":"Emolga","generation":5,"types":["Electric","Flying"],"species":"Sky Squirrel Pokemon","abilities":["Static","Motor Drive"],"weightKg":5}}'
+$ http POST localhost:3000/v1/pokemon Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"86182ad6-89a1-11e8-9a94-a6cf71072f73","attributes":{"name":"Emolga","generation":5,"types":["Electric","Flying"],"species":"Sky Squirrel Pokemon","abilities":["Static","Motor Drive"],"weightKg":5}}'
 (...)
 
-$ http POST localhost:3000/v1/pokemon Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"3","attributes":{"name":"Minun","generation":3,"types":["Electric"],"species":"Cheering Pokemon","abilities":["Minus","Vold Absorb"],"weightKg":4}}'
+$ http POST localhost:3000/v1/pokemon Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"86182c5c-89a1-11e8-9a94-a6cf71072f73","attributes":{"name":"Minun","generation":3,"types":["Electric"],"species":"Cheering Pokemon","abilities":["Minus","Vold Absorb"],"weightKg":4}}'
 (...)
 ```
 
 ### GETing single objects
 
 ```sh
-$ http GET localhost:3000/v1/pokemon/1 Content-Type:application/vnd.api+json
+$ http GET localhost:3000/v1/pokemon/8618284c-89a1-11e8-9a94-a6cf71072f73 Content-Type:application/vnd.api+json
 
 HTTP/1.1 200 OK
 (...)
@@ -111,9 +111,9 @@ HTTP/1.1 200 OK
             ],
             "weightKg": 7
         },
-        "id": "1",
+        "id": "8618284c-89a1-11e8-9a94-a6cf71072f73",
         "links": {
-            "self": "http://localhost:3000/v1/pokemon/1"
+            "self": "http://localhost:3000/v1/pokemon/8618284c-89a1-11e8-9a94-a6cf71072f73"
         },
         "type": "Pokemon"
     }
@@ -123,7 +123,7 @@ HTTP/1.1 200 OK
 ### DELETEing objects
 
 ```sh
-$ http DELETE localhost:3000/v1/pokemon/2 Content-Type:application/vnd.api+json
+$ http DELETE localhost:3000/v1/pokemon/86182ad6-89a1-11e8-9a94-a6cf71072f73 Content-Type:application/vnd.api+json
 (...)
 ```
 
@@ -132,7 +132,7 @@ $ http DELETE localhost:3000/v1/pokemon/2 Content-Type:application/vnd.api+json
 > Error objects provide additional information about problems encountered while performing an operation. Error objects MUST be returned as an array keyed by errors in the top level of a JSON API document.
 
 ```sh
-$ http GET localhost:3000/v1/pokemon/2 Content-Type:application/vnd.api+json
+$ http GET localhost:3000/v1/pokemon/86182ad6-89a1-11e8-9a94-a6cf71072f73 Content-Type:application/vnd.api+json
 
 HTTP/1.1 404 Not Found
 (...)
@@ -154,7 +154,7 @@ HTTP/1.1 404 Not Found
 > If a request does not include all of the attributes for a resource, the server MUST interpret the missing attributes as if they were included with their current values. The server MUST NOT interpret missing attributes as null values.
 
 ```sh
-$ http PATCH localhost:3000/v1/pokemon/3 Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"3","attributes":{"species":"Happy Pokemon","weightKg":7}}'
+$ http PATCH localhost:3000/v1/pokemon/86182c5c-89a1-11e8-9a94-a6cf71072f73 Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"86182c5c-89a1-11e8-9a94-a6cf71072f73","attributes":{"species":"Happy Pokemon","weightKg":7}}'
 
 HTTP/1.1 200 OK
 (...)
@@ -173,9 +173,9 @@ HTTP/1.1 200 OK
             ],
             "weightKg": 7
         },
-        "id": "3",
+        "id": "86182c5c-89a1-11e8-9a94-a6cf71072f73",
         "links": {
-            "self": "http://localhost:3000/v1/pokemon/3"
+            "self": "http://localhost:3000/v1/pokemon/86182c5c-89a1-11e8-9a94-a6cf71072f73"
         },
         "type": "Pokemon"
     }

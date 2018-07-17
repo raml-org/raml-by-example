@@ -15,17 +15,17 @@ types:
     description: Pokemon attributes without any meta, type, id, etc.
     type: jaTypes.attributes
     properties:
-      name: 
-      generation: number
-      types: string[]
-      species: 
-      abilities: string[]
-      weightKg: number
+      name?:
+      generation?: number
+      types?: string[]
+      species?:
+      abilities?: string[]
+      weightKg?: number
   Pokemon:
     description: Pokemon type
     type: jaTypes.resource
     properties:
-      attributes?: PokemonAttrs
+      attributes: PokemonAttrs
 
 /pokemon:
   type:

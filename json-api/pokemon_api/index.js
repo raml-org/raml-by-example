@@ -13,9 +13,15 @@ const pokemonDb = {}
 // Apply middleware
 router.use(mware.setResponseCtHeader)
 router.use(mware.rejectCtWithParams)
+router.use(mware.rejectRequestParam('include'))
+router.use(mware.rejectRequestParam('sort'))
 router.use('/pokemon/{id}', (req, res, next) => {
   mware.item404(pokemonDb, req, res, next)
 })
+router.use('/pokemon', (req, res, next) => {
+  mware.rejectDuplicateCreation(pokemonDb, req, res, next)
+})
+router.use('/pokemon', mware.rejectNotSupportedType('Pokemon'))
 
 
 // Request handlers
