@@ -55,8 +55,41 @@ mediaType: application/vnd.api+json
 > * data: the document’s “primary data”
 > * errors: an array of error objects
 > * meta: a meta object that contains non-standard meta-information.
+> 
+> The members data and errors MUST NOT coexist in the same document.
+> 
+> A document MAY contain any of these top-level members:
+> 
+> * jsonapi: an object describing the server’s implementation
+> * links: a links object related to the primary data.
+> * included: an array of resource objects that are related to the primary data and/or each other (“included resources”).
+> 
+> If a document does not contain a top-level data key, the included member MUST NOT be present either.
 
 How it translates in our API Spec:
 ```raml
-
+(...)
+  success:
+    description: A succesful (2xx) response body.
+    type: object
+    additionalProperties: false
+    properties:
+      data:
+      meta?: object
+      jsonapi?: object
+      links?: object
+      included?:
+        type: array
+        items: object
+  failure:
+    description: A failure (4xx) response body.
+    type: object
+    additionalProperties: false
+    properties:
+      errors:
+        type: array
+        items: object
+      meta?: object
+      jsonapi?: object
+      links?: object
 ```
