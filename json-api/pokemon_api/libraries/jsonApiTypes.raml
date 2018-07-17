@@ -9,38 +9,28 @@ types:
         type: resource[]
         description: To reduce the number of HTTP requests, servers **MAY** allow responses that include related resources along with the requested primary resources. Such responses are called "compound documents".
         uniqueItems: true
-      meta?:
-        type: meta
+      meta?: meta
       links?:
         type: pagelinks
         description: Link members related to the primary data.
-      jsonapi?:
-        type: jsonapi
+      jsonapi?: jsonapi
   failure:
     description: A failure (4xx) response body.
-    type: object
     additionalProperties: false
     properties:
       errors:
         type: error[]
         uniqueItems: true
-      meta?:
-        type: meta
-      jsonapi?:
-        type: jsonapi
-      links?:
-        type: links
+      meta?: meta
+      jsonapi?: jsonapi
+      links?: links
   info:
     description: An information-only response body.
-    type: object
     additionalProperties: false
     properties:
-      meta:
-        type: meta
-      links?:
-        type: links
-      jsonapi?:
-        type: jsonapi
+      meta: meta
+      links?: links
+      jsonapi?: jsonapi
   meta:
     description: Where specified, a meta member can be used to include non-standard meta-information.
     type: object
@@ -58,23 +48,16 @@ types:
     additionalProperties: false
     properties:
       type:
-        type: string
       id?:
-        type: string
-      attributes?:
-        type: attributes
-      relationships?:
-        type: relationships
-      links?:
-        type: links
-      meta?:
-        type: meta
+      attributes?: attributes
+      relationships?: relationships
+      links?: links
+      meta?: meta
   attributes:
     description: Members of the attributes object ("attributes") represent information
       about the resource object in which it's defined.
     type: object
-  links:
-    type: object
+  links: object
   pagelinks:
     type: pagination
     properties:
@@ -83,19 +66,14 @@ types:
   link:
     type: string | linkobject
   linkobject:
-    type: object
     properties:
       href:
         type: uristring
         description: A string containing the link's URL.
-      meta:
-        type: meta
-  relationships:
-    type: object
-  empty:
-    type: nil
+      meta: meta
+  relationships: object
+  empty: nil
   pagination:
-    type: object
     additionalProperties: false
     properties:
       first?:
@@ -111,44 +89,29 @@ types:
         type: uristring | nil
         description: The next page of data
   uristring:
-    type: string
   jsonapi:
-    type: object
     additionalProperties: false
     properties:
       version?:
-        type: string
-      meta?:
-        type: meta
+      meta?: meta
   error:
-    type: object
     additionalProperties: false
     properties:
       id?:
-        type: string
         description: A unique identifier for this particular occurrence of the problem.
-      links?:
-        type: links
+      links?: links
       status?:
-        type: string
         description: The HTTP status code applicable to this problem, expressed as a string value.
       code?:
-        type: string
         description: An application-specific error code, expressed as a string value.
       title?:
-        type: string
         description: A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.
       detail?:
-        type: string
         description: A human-readable explanation specific to this occurrence of the problem.
       source?:
-        type: object
         properties:
           pointer:
-            type: string
             description: A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/data" for a primary data object, or "/data/attributes/title" for a specific attribute].
           parameter:
-            type: string
             description: A string indicating which query parameter caused the error.
-      meta?:
-        type: meta
+      meta?: meta

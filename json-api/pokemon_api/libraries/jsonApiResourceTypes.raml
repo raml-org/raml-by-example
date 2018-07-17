@@ -36,7 +36,6 @@ resourceTypes:
       description: Create a new <<resourcePathName|!singularize>>.
       body:
         application/vnd.api+json:
-          type: object
           properties:
             data: <<dataType>>
           additionalProperties: false
@@ -113,7 +112,6 @@ resourceTypes:
       description: Update an existing <<resourcePath|!singularize>>.
       body:
         application/vnd.api+json:
-          type: object
           properties:
             data: <<dataType>>
           additionalProperties: false

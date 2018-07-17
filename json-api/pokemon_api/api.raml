@@ -12,19 +12,18 @@ uses:
 
 types:
   PokemonAttrs:
-    displayName: PokemonAttrs
     description: Pokemon attributes without any meta, type, id, etc.
     type: jaTypes.attributes
     properties:
-      name: string
+      name: 
       generation: number
       types: string[]
-      species: string
+      species: 
       abilities: string[]
       weightKg: number
   Pokemon:
-    type: jaTypes.resource
     description: Pokemon type
+    type: jaTypes.resource
     properties:
       attributes?: PokemonAttrs
 

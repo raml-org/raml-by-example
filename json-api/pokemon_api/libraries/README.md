@@ -2,7 +2,9 @@ RAML Fragments forked from [https://github.com/n2ygk/raml-snippets](https://gith
 
 ## CHANGELOGS
 
-* Removed unused `types`, `resourceTypes` and `traits` for clarity
+* Re-wrote all type definitions to their inline form (when possible)
+* Removed explicit type definitions
+* Removed unused `types`, `resourceTypes` and `traits`
 * Split `jsonApiCollections.raml` in two files `jsonApiResourceTypes.raml` and `jsonApiResourceTraits.raml`
 * Changed all occurences of `required: false` to the shorter equivalent `<type>?` syntax
 * Removed all occurences ot `required: true` (default is `true`)
