@@ -18,7 +18,7 @@ resourceTypes:
           description: Success. Response contains the primary data and optional metadata.
           body:
             application/vnd.api+json:
-              type: types.collectionSuccess
+              type: types.success
               properties:
                 data: <<dataType>>[]
               example: <<exampleCollection>>
@@ -48,7 +48,7 @@ resourceTypes:
             location?: types.uristring
           body:
             application/vnd.api+json:
-              type: types.itemSuccess
+              type: types.success
               properties:
                 data: <<dataType>>
               example: <<exampleItem>>
@@ -96,7 +96,7 @@ resourceTypes:
           description: Success. Response contains the primary data and optional metadata.
           body:
             application/vnd.api+json:
-              type: types.itemSuccess
+              type: types.success
               properties:
                 data: <<dataType>>
               example:
@@ -125,7 +125,7 @@ resourceTypes:
             The response contains the result of those updates.
           body:
             application/vnd.api+json:
-              type: types.itemSuccess
+              type: types.success
               properties:
                 data: <<dataType>>
               example: <<exampleItem>>

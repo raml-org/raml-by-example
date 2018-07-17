@@ -1,9 +1,10 @@
-RAML Libraries `jsonApiCollections.raml` and `jsonApiLibrary.raml` taken from https://github.com/n2ygk/raml-snippets and reworked a little to only defined elements used in the example app and fix few issues.
+RAML Fragments forked from [https://github.com/n2ygk/raml-snippets](https://github.com/n2ygk/raml-snippets).
 
-## Things changed in libs
+## CHANGELOGS
 
-* Removed not used definitions (types, resourceTypes, traits) to make things simpler and avoid parsing errors;
-* Replaced `<<dataType>>_post` and `<<dataType>>_post` definitions with single param `<<dataType>>` because parser coudn't find types referenced the old way. I think the original type of definition just wasn't valid.
-* Had to split `success` type to `collectionSuccess` and `itemSuccess`. These represent collection/item response. Had to do it because `datatype-expansion` or something deeper doesn't process type unions (`foo | bar`) properly and validates schema against all types instead of "any".
-
-These changes have no effect on the result, I'm just letting you know.
+* Removed unused `types`, `resourceTypes` and `traits` for clarity
+* Split `jsonApiCollections.raml` in two files `jsonApiResourceTypes.raml` and `jsonApiResourceTraits.raml`
+* Changed all occurences of `required: false` to the shorter equivalent `<type>?` syntax
+* Removed all occurences ot `required: true` (default is `true`)
+* Removed all occurences ot `additionalProperties: true` (default is `true`)
+* Replaced `<<dataType>>_post` and `<<dataType>>_patch` with single param `<<dataType>>`

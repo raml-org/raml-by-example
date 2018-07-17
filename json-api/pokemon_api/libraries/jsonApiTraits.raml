@@ -5,10 +5,9 @@ traits:
     description: |
       Collection response is [sorted](http://jsonapi.org/format/#fetching-sorting) in ascending or descending(-) order.
     queryParameters:
-      sort:
+      sort?:
         description: |
           list of type.attributes to sort by. Use a `-` sign to indicate a descending sort.
         type: string
-        required: false
         example: |
           sort=Location.warehouse,-Widget.qty
