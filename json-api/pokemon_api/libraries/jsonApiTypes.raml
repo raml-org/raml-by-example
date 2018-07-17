@@ -5,6 +5,7 @@ types:
     type: object
     additionalProperties: false
     properties:
+      data: data
       included?:
         type: resource[]
         description: To reduce the number of HTTP requests, servers **MAY** allow responses that include related resources along with the requested primary resources. Such responses are called "compound documents".
