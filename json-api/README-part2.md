@@ -139,7 +139,7 @@ HTTP/1.1 404 Not Found
 {
     "errors": [
         {
-            "detail": "Pokemon with id 2 not found",
+            "detail": "Pokemon with id 86182ad6-89a1-11e8-9a94-a6cf71072f73 not found",
             "status": "404",
             "title": "Resource not found"
         }
