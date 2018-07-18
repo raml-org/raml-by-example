@@ -146,38 +146,3 @@ HTTP/1.1 404 Not Found
     ]
 }
 ```
-
-### Updating objects
-
-> Any or all of a resource’s attributes MAY be included in the resource object included in a PATCH request.
->
-> If a request does not include all of the attributes for a resource, the server MUST interpret the missing attributes as if they were included with their current values. The server MUST NOT interpret missing attributes as null values.
-
-```sh
-$ http PATCH localhost:3000/v1/pokemon/86182c5c-89a1-11e8-9a94-a6cf71072f73 Accept:application/vnd.api+json Content-Type:application/vnd.api+json data:='{"type":"Pokemon","id":"86182c5c-89a1-11e8-9a94-a6cf71072f73","attributes":{"species":"Happy Pokemon","weightKg":7}}'
-
-HTTP/1.1 200 OK
-(...)
-{
-    "data": {
-        "attributes": {
-            "abilities": [
-                "Minus",
-                "Vold Absorb"
-            ],
-            "generation": 3,
-            "name": "Minun",
-            "species": "Happy Pokemon",
-            "types": [
-                "Electric"
-            ],
-            "weightKg": 7
-        },
-        "id": "86182c5c-89a1-11e8-9a94-a6cf71072f73",
-        "links": {
-            "self": "http://localhost:3000/v1/pokemon/86182c5c-89a1-11e8-9a94-a6cf71072f73"
-        },
-        "type": "Pokemon"
-    }
-}
-```

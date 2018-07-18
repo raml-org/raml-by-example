@@ -32,7 +32,7 @@ resourceTypes:
                   - status: "404"
                     title: Resource not found
                     detail: <<resourcePath>> not found
-    post:
+    post?:
       description: Create a new <<resourcePathName|!singularize>>.
       body:
         application/vnd.api+json:
@@ -156,7 +156,7 @@ resourceTypes:
                 errors:
                   - status: "409"
                     title: Conflict
-    delete:
+    delete?:
       description: Delete an existing <<resourcePath|!singularize>>.
       responses:
         200:

@@ -45,25 +45,13 @@ router.route('/pokemon')
     })
   })
 
-// Handles GET, PATCH, DELETE requests to /pokemon/{id}
+// Handles GET, DELETE requests to /pokemon/{id}
 router.route('/pokemon/{id}', {id: {type: 'string'}})
   .get((req, res) => {
     const pok = pokemonDb[req.params.id]
     helpers.resJSON(res, {
       data: helpers.wrapData(pok, req.params.id)
     })
-  })
-  .patch((req, res) => {
-    const pok = pokemonDb[req.params.id]
-    const pokChanges = req.body.data.attributes
-    for (let attr in pokChanges) {
-      pok[attr] = pokChanges[attr]
-    }
-    pokemonDb[req.params.id] = pok
-    helpers.resJSON(res, {
-      data: helpers.wrapData(pok, req.params.id)
-    })
-    res.status(204).end()
   })
   .delete((req, res) => {
     delete pokemonDb[req.params.id]

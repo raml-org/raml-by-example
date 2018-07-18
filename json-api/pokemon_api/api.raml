@@ -17,12 +17,12 @@ types:
     properties:
       attributes: # make properties required if no PATCH defined, otherwise create two separate types
         properties:
-          name?:
-          generation?: number
-          types?: string[]
-          species?:
-          abilities?: string[]
-          weightKg?: number
+          name:
+          generation: number
+          types: string[]
+          species:
+          abilities: string[]
+          weightKg: number
 
 /pokemon:
   type:
@@ -32,11 +32,11 @@ types:
       exampleItem: !include examples/PokemonItemExample.json
   get:
     is: [ jaTraits.sortable ]
+  post:
 
   /{id}:
     type:
       jaResourceTypes.item:
         dataType: Pokemon
-        # dataTypeEditable: Pokemon
         exampleItem: !include examples/PokemonItemExample.json
-    # patch:
+    delete:
