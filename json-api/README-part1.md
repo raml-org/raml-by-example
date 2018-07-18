@@ -69,27 +69,34 @@ mediaType: application/vnd.api+json
 How it translates in our API Spec:
 ```raml
 (...)
-  success:
-    description: A succesful (2xx) response body.
-    type: object
-    additionalProperties: false
+types:
+  response:
     properties:
-      data:
       meta?: object
       jsonapi?: object
       links?: object
+  success:
+    description: A succesful (2xx) response body
+    type: response
+    additionalProperties: false
+    properties:
+      data: object
       included?:
         type: array
         items: object
   failure:
-    description: A failure (4xx) response body.
-    type: object
+    description: A failure (4xx) response body
+    type: response
     additionalProperties: false
     properties:
       errors:
         type: array
         items: object
-      meta?: object
-      jsonapi?: object
-      links?: object
+  info:
+    description: An information-only response body
+    type: response
+    additionalProperties: false
+    properties:
+      meta: object
+
 ```

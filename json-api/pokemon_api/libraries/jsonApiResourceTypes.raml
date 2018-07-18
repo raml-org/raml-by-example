@@ -108,12 +108,12 @@ resourceTypes:
                   - status: "404"
                     title: Resource not found
                     detail: <<resourcePath>> not found
-    patch:
+    patch?:
       description: Update an existing <<resourcePath|!singularize>>.
       body:
         application/vnd.api+json:
           properties:
-            data: <<dataType>>
+            data: <<dataTypeEditable>>
           additionalProperties: false
       responses:
         200:

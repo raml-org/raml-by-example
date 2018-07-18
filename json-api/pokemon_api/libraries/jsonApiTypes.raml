@@ -1,37 +1,32 @@
 #%RAML 1.0 Library
 types:
+  response:
+    additionalProperties: false
+    properties:
+      meta?: meta
+      jsonapi?: jsonapi
+      links?: links
   success:
     description: A succesful (2xx) response body.
-    type: object
-    additionalProperties: false
+    type: response
     properties:
       data: data
       included?:
         type: resource[]
         description: To reduce the number of HTTP requests, servers **MAY** allow responses that include related resources along with the requested primary resources. Such responses are called "compound documents".
         uniqueItems: true
-      meta?: meta
-      links?:
-        type: pagelinks
-        description: Link members related to the primary data.
-      jsonapi?: jsonapi
   failure:
     description: A failure (4xx) response body.
-    additionalProperties: false
+    type: response
     properties:
       errors:
         type: error[]
         uniqueItems: true
-      meta?: meta
-      jsonapi?: jsonapi
-      links?: links
   info:
     description: An information-only response body.
-    additionalProperties: false
+    type: response
     properties:
       meta: meta
-      links?: links
-      jsonapi?: jsonapi
   meta:
     description: Where specified, a meta member can be used to include non-standard meta-information.
     type: object
@@ -58,14 +53,18 @@ types:
     description: Members of the attributes object ("attributes") represent information
       about the resource object in which it's defined.
     type: object
-  links: object
-  pagelinks:
+  links:
+    type: selfLinks | relatedLinks
+    additionalProperties: false
+  selfLinks:
     type: pagination
     properties:
       self: link
-    additionalProperties: false
-  link:
-    type: string | linkobject
+  relatedLinks:
+    type: pagination
+    properties:
+      related: link
+  link: string | linkobject
   linkobject:
     properties:
       href:
