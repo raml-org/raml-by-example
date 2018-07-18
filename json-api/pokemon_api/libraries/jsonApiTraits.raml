@@ -14,10 +14,8 @@ traits:
     description: |
       Collection response has [sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets).
     queryParameters:
-      fields[<<resourcePathName>>]:
+      fields[<<resourcePathName>>]?:
         description: |
           Return only the listed attributes for the given type.
-        type: string
-        required: false
         example: |
           fields[Location]=warehouse,aisle&fields[Widget]=name
