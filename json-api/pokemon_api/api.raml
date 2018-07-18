@@ -11,21 +11,18 @@ uses:
   jaTraits: libraries/jsonApiTraits.raml
 
 types:
-  PokemonAttrs:
-    description: Pokemon attributes without any meta, type, id, etc.
-    type: jaTypes.attributes
-    properties:
-      name?:
-      generation?: number
-      types?: string[]
-      species?:
-      abilities?: string[]
-      weightKg?: number
   Pokemon:
     description: Pokemon type
     type: jaTypes.resource
     properties:
-      attributes: PokemonAttrs
+      attributes: # make properties required if no PATCH defined, otherwise create two separate types
+        properties:
+          name?:
+          generation?: number
+          types?: string[]
+          species?:
+          abilities?: string[]
+          weightKg?: number
 
 /pokemon:
   type:
@@ -40,4 +37,6 @@ types:
     type:
       jaResourceTypes.item:
         dataType: Pokemon
+        # dataTypeEditable: Pokemon
         exampleItem: !include examples/PokemonItemExample.json
+    # patch:
