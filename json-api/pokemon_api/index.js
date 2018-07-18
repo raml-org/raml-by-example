@@ -14,7 +14,6 @@ const pokemonDb = {}
 router.use(mware.setResponseCtHeader)
 router.use(mware.rejectCtWithParams)
 router.use(mware.rejectRequestParam('include'))
-router.use(mware.rejectRequestParam('sort'))
 router.use('/pokemon/{id}', (req, res, next) => {
   mware.item404(pokemonDb, req, res, next)
 })
@@ -30,7 +29,9 @@ router.use('/pokemon', mware.rejectNotSupportedType('Pokemon'))
 router.route('/pokemon')
   .get((req, res) => {
     const data = {
-      data: helpers.wrapDataObjs(pokemonDb, helpers.getSparseFields(req)),
+      data: helpers.wrapDataObjs(
+        pokemonDb, helpers.getSparseFields(req),
+        helpers.getSortFields(req)),
       links: {self: helpers.makePokemonURL()}
     }
     helpers.resJSON(res, data)

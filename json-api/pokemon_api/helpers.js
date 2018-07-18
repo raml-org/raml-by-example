@@ -1,3 +1,5 @@
+const sortBy = require('sort-by')
+
 // Helpers
 
 // Wraps pokemon data in JSON API response compatible object
@@ -25,12 +27,31 @@ function makeSparse (obj, fields) {
 }
 
 // Wraps multiple pokemon data in JSON API response compatible object
-function wrapDataObjs (poksObj, fields) {
-  const poks = []
+function wrapDataObjs (poksObj, fields, sortFields) {
+  let poks = []
   for (let id in poksObj) {
     poks.push(wrapData(poksObj[id], id, fields))
   }
+  poks = sortObjects(poks, sortFields)
   return poks
+}
+
+// Sort objects by particular fields
+function sortObjects (objs, sortFields) {
+  if (sortFields.length === 0) {
+    return objs
+  }
+  sortFields = sortFields.map((field) => {
+    let desc = false
+    if (field[0] === '-') {
+      desc = true
+      field = field.slice(1)
+    }
+    let newField = `attributes.${field}`
+    return desc ? '-' + newField : newField
+  })
+  objs = objs.sort(sortBy(...sortFields))
+  return objs
 }
 
 // Wraps response in JSON using raw Express funcs to avoid
@@ -53,9 +74,9 @@ function makePokemonURL (id) {
   return url
 }
 
-// Get split value of sparse request param
-function getSparseFields (req) {
-  let fields = req.query['fields[pokemon]'] || ''
+// Get split value of request param
+function getParamVal (req, param) {
+  let fields = req.query[param] || ''
   fields = fields.split(',')
   return fields.filter((field) => {
     if (field !== '') {
@@ -64,11 +85,22 @@ function getSparseFields (req) {
   })
 }
 
+// Get split value of sparse request param
+function getSparseFields (req) {
+  return getParamVal(req, 'fields[pokemon]')
+}
+
+// Get split value of sorting request param
+function getSortFields (req) {
+  return getParamVal(req, 'sort')
+}
+
 module.exports ={
   wrapData: wrapData,
   wrapDataObjs: wrapDataObjs,
   resJSON: resJSON,
   containsParams: containsParams,
   makePokemonURL: makePokemonURL,
-  getSparseFields: getSparseFields
+  getSparseFields: getSparseFields,
+  getSortFields: getSortFields
 }
