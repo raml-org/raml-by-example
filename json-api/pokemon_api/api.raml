@@ -31,12 +31,15 @@ types:
       exampleCollection: !include examples/PokemonCollectionExample.json
       exampleItem: !include examples/PokemonItemExample.json
   get:
-    is: [ jaTraits.sortable ]
+    is: [ jaTraits.sortable, jaTraits.sparse ]
   post:
+    is: [ jaTraits.sparse ]
 
   /{id}:
     type:
       jaResourceTypes.item:
         dataType: Pokemon
         exampleItem: !include examples/PokemonItemExample.json
+    get:
+      is: [ jaTraits.sparse ]
     delete:

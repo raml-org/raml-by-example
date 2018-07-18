@@ -30,7 +30,7 @@ router.use('/pokemon', mware.rejectNotSupportedType('Pokemon'))
 router.route('/pokemon')
   .get((req, res) => {
     const data = {
-      data: helpers.wrapDataObjs(pokemonDb),
+      data: helpers.wrapDataObjs(pokemonDb, helpers.getSparseFields(req)),
       links: {self: helpers.makePokemonURL()}
     }
     helpers.resJSON(res, data)
@@ -41,7 +41,8 @@ router.route('/pokemon')
     res.set('Location', helpers.makePokemonURL(data.id))
     res.status(201)
     helpers.resJSON(res, {
-      data: helpers.wrapData(data.attributes, data.id)
+      data: helpers.wrapData(
+        data.attributes, data.id, helpers.getSparseFields(req))
     })
   })
 
@@ -50,7 +51,8 @@ router.route('/pokemon/{id}', {id: {type: 'string'}})
   .get((req, res) => {
     const pok = pokemonDb[req.params.id]
     helpers.resJSON(res, {
-      data: helpers.wrapData(pok, req.params.id)
+      data: helpers.wrapData(
+        pok, req.params.id, helpers.getSparseFields(req))
     })
   })
   .delete((req, res) => {

@@ -10,3 +10,14 @@ traits:
           list of type.attributes to sort by. Use a `-` sign to indicate a descending sort.
         example: |
           sort=Location.warehouse,-Widget.qty
+  sparse:
+    description: |
+      Collection response has [sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets).
+    queryParameters:
+      fields[<<resourcePathName>>]:
+        description: |
+          Return only the listed attributes for the given type.
+        type: string
+        required: false
+        example: |
+          fields[Location]=warehouse,aisle&fields[Widget]=name
