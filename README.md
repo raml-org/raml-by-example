@@ -1,3 +1,3 @@
-# RAML Playground
+# RAML by Example
 
-Playground examples using tools from the RAML community. More on [RAML Playground](https://medium.com/raml-api).
+Series of examples leveraging tools of the RAML community. More on [RAML Playground](https://medium.com/raml-api).
